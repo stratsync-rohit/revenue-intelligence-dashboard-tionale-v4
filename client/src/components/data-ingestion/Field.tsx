@@ -9,7 +9,7 @@ export type FieldProps = {
 
 const Field: React.FC<FieldProps> = ({ label, value, highlight, icon }) => (
   <div className="rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2" style={{ border: '1px solid rgb(var(--color-border-light))', backgroundColor: 'rgb(var(--color-bg-secondary))' }}>
-    <p className="text-xs sm:text-sm font-medium uppercase tracking-wide flex items-center gap-1 sm:gap-1.5" style={{ color: 'rgb(var(--color-text-tertiary))' }}>
+    <p className="text-xs sm:text-sm font-medium uppercase tracking-wide flex items-center gap-1 sm:gap-1.5" style={{ color: 'rgb(var(--color-text-primary))' }}>
       {icon && <span className="text-sm sm:text-base">{icon}</span>}
       <span className="truncate">{label}</span>
     </p>

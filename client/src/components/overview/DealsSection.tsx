@@ -143,7 +143,7 @@ const DealsSection: React.FC<DealsSectionProps> = ({ deals, onAskAI }) => {
               <div>
                 <p
                   className="text-xs sm:text-sm"
-                  style={{ color: "rgb(var(--color-text-primary))" }}
+                  style={{ color: "rgb(var(--color-text-tertiary))" }}
                 >
                   Suggested Price
                 </p>
@@ -185,11 +185,10 @@ const DealsSection: React.FC<DealsSectionProps> = ({ deals, onAskAI }) => {
                     key={tag}
                     className="rounded-full px-2 sm:px-2.5 py-0.5 text-xs sm:text-sm font-medium"
                     style={{
-  backgroundColor: "rgb(var(--color-bg-secondary))",
-  color: "rgb(var(--color-text-secondary))",
-  border: "1px solid rgb(var(--color-border-light))",
-}}
-
+                      backgroundColor: "rgb(var(--color-bg-secondary))",
+                      color: "rgb(var(--color-text-secondary))",
+                      border: "1px solid rgb(var(--color-border-light))",
+                    }}
                   >
                     {tag}
                   </span>

@@ -73,7 +73,7 @@ const MessageBlock: React.FC<MessageBlockProps> = ({
     <section className="space-y-1">
       <p
         className="text-xs sm:text-sm font-semibold uppercase tracking-wide"
-        style={{ color: "rgb(var(--color-text-tertiary))" }}
+        style={{ color: "rgb(var(--color-text-primary))" }}
       >
         Raw Message
       </p>
@@ -85,7 +85,7 @@ const MessageBlock: React.FC<MessageBlockProps> = ({
     <section className="space-y-2">
       <p
         className="text-xs sm:text-sm font-semibold uppercase tracking-wide"
-        style={{ color: "rgb(var(--color-text-tertiary))" }}
+        style={{ color: "rgb(var(--color-text-primary))" }}
       >
         AI-Extracted Intelligence
       </p>
