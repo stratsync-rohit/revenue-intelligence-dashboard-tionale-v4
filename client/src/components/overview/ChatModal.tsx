@@ -110,12 +110,18 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center p-4">
-          <motion.div className="w-full max-w-[760px] bg-white rounded-2xl shadow-xl overflow-hidden">
+          <motion.div
+            className="w-full max-w-[760px] rounded-2xl shadow-xl overflow-hidden"
+            style={{ backgroundColor: "rgb(var(--color-bg-secondary))" }}
+          >
             {/* HEADER */}
             <div className="px-6 py-4 border-b">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">
+                  <h3
+                    className="text-lg font-semibold"
+                    style={{ color: "rgb(var(--color-text-primary))" }}
+                  >
                     Deal Intelligence Chat
                   </h3>
                   <p className="text-sm text-gray-500">
@@ -149,7 +155,8 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
             {/* CHAT */}
             <div
               ref={containerRef}
-              className="h-[60vh] p-6 overflow-y-auto space-y-6 bg-gray-50"
+              className="h-[60vh] p-6 overflow-y-auto space-y-6"
+              style={{ backgroundColor: "rgb(var(--color-bg-secondary))" }}
             >
               {messages.map((m) =>
                 m.role === "ai" ? (
@@ -161,7 +168,12 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
                     />
 
                     <div className="flex flex-col items-start max-w-[85%]">
-                      <div className="bg-slate-200 px-4 py-3 rounded-2xl text-gray-800">
+                      <div
+                        style={{
+                          backgroundColor: "rgb(var(--color-bg-primary))",
+                        }}
+                        className=" px-4 py-3 bg-ai-bubble rounded-2xl text-gray-800"
+                      >
                         {m.text}
                       </div>
                       <span className="text-xs text-gray-400 mt-1">
@@ -173,7 +185,12 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
                   /* USER MESSAGE */
                   <div key={m.id} className="flex justify-end">
                     <div className="flex flex-col items-end max-w-[85%]">
-                      <div className="bg-ai-bubble text-secondary px-4 py-3 rounded-2xl">
+                      <div
+                        style={{
+                          backgroundColor: "rgb(var(--color-bg-primary))",
+                        }}
+                        className="bg-ai-bubble text-secondary px-4 py-3 rounded-2xl"
+                      >
                         {m.text}
                       </div>
                       <span className="text-xs text-quaternary mt-1">
@@ -186,7 +203,10 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
             </div>
 
             {/* INPUT */}
-            <div className="px-6 py-4 border-t bg-white flex gap-3">
+            <div
+              className="px-6 py-4 border-t flex gap-3"
+              style={{ backgroundColor: "rgb(var(--color-bg-primary))" }}
+            >
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -199,14 +219,26 @@ const ChatModal: React.FC<ChatModalProps> = ({ open, signalName, onClose }) => {
                 }}
                 rows={1}
                 placeholder="Type a message…"
-                className="flex-1 resize-none rounded-full px-4 py-2 border focus:outline-none"
+                className="flex-1 resize-none rounded-full px-4 py-2 border focus:outline-none focus:ring-0"
+                style={{ backgroundColor: "rgb(var(--color-bg-secondary))" }}
               />
               <button
                 onClick={sendMessage}
                 disabled={isSending || !input.trim()}
-                className="h-10 w-10 rounded-full bg-emerald-600 text-white flex items-center justify-center"
+                className={`
+    h-10 w-10 rounded-full
+    flex items-center justify-center
+    transition-all duration-200
+    disabled:opacity-50 disabled:cursor-not-allowed
+    
+  `}
+                style={{
+                  backgroundColor: "rgb(var(--color-primary))",
+                  color: "rgb(var(--color-text-primary))",
+                }}
+                aria-label="Send message"
               >
-                →
+                <span className="text-lg ">→</span>
               </button>
             </div>
           </motion.div>
