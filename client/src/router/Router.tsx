@@ -1,9 +1,13 @@
 import CammandCenter from "../components/CammandCenter";
+import Suppliers from "../pages/Suppliers";
+import Customers from "../pages/Customers";
+import Inventory from "../pages/Inventory";
+import Categories from "../pages/Categories";
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "../components/Layout";
 import Dashboard from "../pages/Dashboard";
-import Home from "../pages/Home";
+
 import NotFound from "../pages/NotFound";
 
 // Loading component
@@ -21,6 +25,22 @@ const routes = [
   {
     path: "/command-center",
     element: <CammandCenter />,
+  },
+  {
+    path: "/suppliers",
+    element: <Suppliers />,
+  },
+  {
+    path: "/customers",
+    element: <Customers />,
+  },
+  {
+    path: "/inventory",
+    element: <Inventory />,
+  },
+  {
+    path: "/categories",
+    element: <Categories />,
   },
   {
     path: "*",
