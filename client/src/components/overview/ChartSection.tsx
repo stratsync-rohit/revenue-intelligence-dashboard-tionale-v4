@@ -94,14 +94,14 @@ const ChartSection = () => {
     <div className="card-flat">
       <div className="mb-4">
         <h2 className="text-lg font-semibold text-primary">
-    Real-Time Pricing Intelligence
-  </h2>
+          Real-Time Pricing Intelligence
+        </h2>
         <p className="text-sm text-secondary">
           Live commodity price movements across global markets
         </p>
       </div>
 
-      <div className={isSmall ? "h-52" : "h-72"}>
+      <div className={`w-full min-w-[200px] ${isSmall ? "h-52" : "h-72"}`}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid stroke="#E5E7EB" strokeDasharray="4 6" />

@@ -1,6 +1,7 @@
 
-import { Outlet } from "react-router-dom";
 
+import { Outlet } from "react-router-dom";
+import Header from "../components/header/GlobalHeader";
 import Footer from "../components/Footer";
 
 const AppLayout = () => {
@@ -12,7 +13,7 @@ const AppLayout = () => {
         color: "rgb(var(--color-text-primary))",
       }}
     >
-  
+      <Header />
       <main className="flex-grow">
         <Outlet />
       </main>

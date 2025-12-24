@@ -1,8 +1,7 @@
-import React from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AppLayout from "../layouts/AppLayout";
-import DashboardHeader from "../components/header/DashboardHeader";
 import Dashboard from "../pages/Dashboard";
 import CammandCenter from "../components/CammandCenter";
 import Suppliers from "../pages/Suppliers";
@@ -11,25 +10,15 @@ import Inventory from "../pages/Inventory";
 import Categories from "../pages/Categories";
 import NotFound from "../pages/NotFound";
 
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
-  </div>
-);
+
 
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Layout wrapper */}
         <Route element={<AppLayout />}>
-          <Route path="/" element={
-            <>
-              <DashboardHeader />
-              <Dashboard />
-            </>
-          } />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/command-center" element={<CammandCenter />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/customers" element={<Customers />} />
