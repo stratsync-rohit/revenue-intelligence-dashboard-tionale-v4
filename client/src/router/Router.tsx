@@ -1,44 +1,47 @@
-import React, { Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Header from '../components/Header'
-
-// Lazy load pages
-const Home = lazy(() => import('../pages/Home'))
-const Dashboard = lazy(() => import('../pages/Dashboard'))
-const NotFound = lazy(() => import('../pages/NotFound'))
+import CammandCenter from "../components/CammandCenter";
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "../components/Layout";
+import Dashboard from "../pages/Dashboard";
+import Home from "../pages/Home";
+import NotFound from "../pages/NotFound";
 
 // Loading component
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
   </div>
-)
+);
 
 const routes = [
-    
-    {
-        path: '/',
-        element: <Dashboard />
-    },
-    {
-        path: '*',
-        element: <NotFound />
-    }
-]
+  {
+    path: "/",
+    element: <Dashboard />,
+  },
+  {
+    path: "/command-center",
+    element: <CammandCenter />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+];
 
 const AppRouter = () => {
   return (
     <Router>
-      <Header />
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.element} />
-          ))}
-        </Routes>
-      </Suspense>
+      <Layout>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            ))}
+          </Routes>
+        </Suspense>
+      </Layout>
     </Router>
-  )
-}
+  );
+};
 
-export default AppRouter
+export default AppRouter;
