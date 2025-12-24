@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { NotificationDropdown } from "./NotificationDropdown";
+import { NotificationDropdown } from "../NotificationDropdown";
 
 function Header() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());

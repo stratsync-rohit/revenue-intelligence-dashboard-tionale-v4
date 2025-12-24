@@ -1,12 +1,25 @@
-import React from 'react';
+import SectionHeader from "../components/header/SectionHeader";
 
-const CammandCenter: React.FC = () => {
+const RevenueCommandCenter = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold mb-4">Command Center</h1>
-      <p className="text-2xl text-gray-600">Coming Soon</p>
-    </div>
+    <>
+      <SectionHeader
+        title="StratSync Revenue Command Center"
+        subtitle="Tionale | Perfumes and Cosmetics Trading"
+        stats={[
+          { label: "Critical", count: 3, color: "red" },
+          { label: "Warnings", count: 5, color: "orange" },
+          { label: "Stable", count: 18, color: "green" },
+        ]}
+        rightAction={<button className="btn">Last 30 Days</button>}
+      />
+
+      {/* page content */}
+      <div className="p-6">
+        {/* cards, alerts, tables */}
+      </div>
+    </>
   );
 };
 
-export default CammandCenter;
+export default RevenueCommandCenter;
