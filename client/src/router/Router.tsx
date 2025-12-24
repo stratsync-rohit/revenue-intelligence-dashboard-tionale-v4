@@ -1,7 +1,8 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AppLayout from "../layouts/AppLayout";
+import DashboardHeader from "../components/header/DashboardHeader";
 import Dashboard from "../pages/Dashboard";
 import CammandCenter from "../components/CammandCenter";
 import Suppliers from "../pages/Suppliers";
@@ -23,14 +24,18 @@ const AppRouter = () => {
       <Routes>
         {/* Layout wrapper */}
         <Route element={<AppLayout />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={
+            <>
+              <DashboardHeader />
+              <Dashboard />
+            </>
+          } />
           <Route path="/command-center" element={<CammandCenter />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/categories" element={<Categories />} />
         </Route>
-
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,12 +1,9 @@
-import React from "react";
-import GlobalHeader from "../components/header/GlobalHeader";
+
+import { Outlet } from "react-router-dom";
+
 import Footer from "../components/Footer";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const AppLayout: React.FC<LayoutProps> = ({ children }) => {
+const AppLayout = () => {
   return (
     <div
       className="flex flex-col min-h-screen"
@@ -15,8 +12,10 @@ const AppLayout: React.FC<LayoutProps> = ({ children }) => {
         color: "rgb(var(--color-text-primary))",
       }}
     >
-      <GlobalHeader />
-      <main className="flex-grow">{children}</main>
+  
+      <main className="flex-grow">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

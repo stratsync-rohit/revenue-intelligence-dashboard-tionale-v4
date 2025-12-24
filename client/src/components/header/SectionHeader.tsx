@@ -11,7 +11,7 @@ type Props = {
 
 const SectionHeader = ({ title, subtitle, stats, rightAction }: Props) => {
   return (
-    <div className="bg-white border-b px-6 py-4">
+    <div className="bg-blue-400 border-b px-6 py-4">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-xl font-semibold">{title}</h1>
