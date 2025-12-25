@@ -1,4 +1,5 @@
 import { ArrowLeft, Calendar } from "lucide-react";
+import StatusChip from "../StatusChip";
 
 const CommandCenterHeader = () => {
   return (
