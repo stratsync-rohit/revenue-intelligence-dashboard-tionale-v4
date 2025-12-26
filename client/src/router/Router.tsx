@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AppLayout from "../layouts/AppLayout";
 import Dashboard from "../pages/Dashboard";
-import CammandCenter from "../components/CammandCenter";
+import CommandCenter from "../components/CommandCenter";
 import Suppliers from "../pages/Suppliers";
 import Customers from "../pages/Customers";
 import Inventory from "../pages/Inventory";
@@ -19,7 +19,7 @@ const AppRouter = () => {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/command-center" element={<CammandCenter />} />
+          <Route path="/command-center" element={<CommandCenter />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/inventory" element={<Inventory />} />

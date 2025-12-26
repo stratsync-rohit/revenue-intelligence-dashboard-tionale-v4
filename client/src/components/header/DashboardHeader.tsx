@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NotificationDropdown } from "../NotificationDropdown";
 
 function Header() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -39,6 +40,9 @@ function Header() {
           </div>
 
           <NotificationDropdown />
+          <button onClick={() => navigate("/command-center")} className="py-2 rounded-md bg-red-600 text-white px-4 text-sm font-medium">
+            Command Center
+          </button>
         </div>
       </header>
       {/* Horizontal grey line below header */}
