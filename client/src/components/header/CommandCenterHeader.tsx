@@ -22,7 +22,7 @@ const CommandCenterHeader = () => {
 
           <div className="flex items-center gap-3">
             {/* <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
-              ✦
+              ✦ test
             </div> */}
               <img
             src="/image/client-images/logo.png"
