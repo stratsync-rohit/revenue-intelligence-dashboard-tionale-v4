@@ -1,28 +1,43 @@
 import { ArrowLeft, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import StatusChip from "../common/StatusChip";
+import APP_CONFIG from "../../config/app.config";
+import { useClient } from "../../context/ClientContext";
 
 const CommandCenterHeader = () => {
+  const navigate = useNavigate();
+  const client = useClient();
   return (
     <header className="w-full bg-white border-b">
       <div className="flex items-center justify-between px-6 py-4">
 
         {/* LEFT */}
         <div className="flex items-center gap-4">
-          <button className="p-2 rounded-md hover:bg-gray-100">
+          <button
+            
+            onClick={() => navigate("/")}
+          >
             <ArrowLeft size={18} />
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
+            {/* <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
               ✦
-            </div>
+            </div> */}
+              <img
+            src="/image/client-images/logo.png"
+            alt="Tionale Logo"
+            className="h-9 w-auto object-contain brightness-125 contrast-125"
+          />
 
             <div>
               <h1 className="text-lg font-semibold text-gray-900">
-                StratSync Revenue Command Center
+                {APP_CONFIG.productName} Revenue Command Center
+                
               </h1>
               <p className="text-sm text-gray-500">
-                Tionale | Perfumes and Cosmetics Trading
+               
+                {client.name} | {client.industry}
               </p>
             </div>
           </div>

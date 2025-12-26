@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NotificationDropdown } from "../NotificationDropdown";
 
+
 function Header() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Header() {
         {/* Logo + Tagline (INLINE like image) */}
         <Link to="/" className="flex items-center gap-4">
           <img
-            src="/image/image.png"
+            src="/image/client-images/header-logo.png"
             alt="Tionale Logo"
             className="h-9 w-auto object-contain brightness-125 contrast-125"
           />

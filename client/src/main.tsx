@@ -5,6 +5,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import AppRouter from './router/Router';
+import { ClientProvider } from "./context/ClientContext";
+
 
 
 import '../src/css/Parent-Index.css';
@@ -34,6 +36,12 @@ if (userCssUrl && typeof userCssUrl === 'string') {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <ClientProvider value={{
+        name: "Tionale",
+        industry: "Perfumes and Cosmetics Trading",
+      }}>
+
     <AppRouter />
+    </ClientProvider>
   </StrictMode>
 );

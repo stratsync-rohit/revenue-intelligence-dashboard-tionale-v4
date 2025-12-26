@@ -1,4 +1,5 @@
-import React from "react";
+
+import APP_CONFIG from "../config/app.config";
 
 function Footer() {
   return (
@@ -38,7 +39,7 @@ function Footer() {
               className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[rgb(var(--color-bg-primary)/0.06)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 transition"
             >
               <img
-                src="/image/logo.jpeg"
+                src="/image/SS-images/logo.jpeg"
                 alt="StratSync logo"
                 className="h-4 w-4 sm:h-5 sm:w-5 rounded-full object-cover"
                 width={20}
@@ -48,7 +49,7 @@ function Footer() {
                 className="text-sm sm:text-base font-semibold"
                 style={{ color: "rgb(var(--color-text-primary))" }}
               >
-                StratSync
+                {APP_CONFIG.productName}
               </span>
             </a>
           </div>
