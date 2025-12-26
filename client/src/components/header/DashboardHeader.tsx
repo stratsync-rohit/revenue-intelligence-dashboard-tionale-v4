@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NotificationDropdown } from "../NotificationDropdown";
+import clientHeader from "/assets/client-images/header-logo.png"
 
 
 function Header() {
@@ -21,7 +22,7 @@ function Header() {
         {/* Logo + Tagline (INLINE like image) */}
         <Link to="/" className="flex items-center gap-4">
           <img
-            src="/image/client-images/header-logo.png"
+            src={clientHeader}
             alt="Tionale Logo"
             className="h-9 w-auto object-contain brightness-125 contrast-125"
           />

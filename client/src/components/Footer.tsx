@@ -1,5 +1,6 @@
 
 import APP_CONFIG from "../config/app.config";
+import logo from "/assets/SS-images/logo.jpeg";
 
 function Footer() {
   return (
@@ -39,7 +40,7 @@ function Footer() {
               className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[rgb(var(--color-bg-primary)/0.06)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 transition"
             >
               <img
-                src="/image/SS-images/logo.jpeg"
+                src={logo}
                 alt="StratSync logo"
                 className="h-4 w-4 sm:h-5 sm:w-5 rounded-full object-cover"
                 width={20}

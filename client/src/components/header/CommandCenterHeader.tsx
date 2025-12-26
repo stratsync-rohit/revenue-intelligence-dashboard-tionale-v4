@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StatusChip from "../common/StatusChip";
 import APP_CONFIG from "../../config/app.config";
 import { useClient } from "../../context/ClientContext";
+import clientLogo from "/assets/client-images/logo.png"
 
 const CommandCenterHeader = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const CommandCenterHeader = () => {
               ✦ test
             </div> */}
               <img
-            src="/image/client-images/logo.png"
+            src={clientLogo}
             alt="Tionale Logo"
             className="h-9 w-auto object-contain brightness-125 contrast-125"
           />
