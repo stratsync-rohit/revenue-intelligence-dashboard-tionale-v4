@@ -1,13 +1,15 @@
 import { AlertTriangle, AlertCircle } from "lucide-react";
-import React from "react";
+import { Database } from "lucide-react";
+import { MessageSquare } from "lucide-react";
+import { Lightbulb } from "lucide-react";
+
+
 
 const RevenueAlert = () => {
   return (
     <>
-        {/* ===== Section 4: Priority Revenue Alerts ===== */}
       <div className="border rounded-2xl p-6 m-6 bg-white">
         <div className="flex items-center gap-2 mb-6">
-          {/* <span className="text-red-500 text-xl">🚨</span> */}
           <AlertTriangle className="text-red-500" />
           <h3 className="text-lg font-semibold">Priority Revenue Alerts</h3>
         </div>
@@ -48,20 +50,26 @@ const RevenueAlert = () => {
                   SIGNALS SURFACED
                 </p>
 
-                <div className="text-xs mb-2">
-                  <p className="font-medium text-blue-600 mb-1">
-                    Structured Data
-                  </p>
+                <div className="text-xs mb-2 bg-white/50 p-2 rounded-lg">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Database className="inline-block text-blue-600 w-3 h-3" />
+                    <p className="font-medium text-blue-600 mb-0">
+                      Structured Data
+                    </p>
+                  </div>
                   <ul className="list-disc ml-4 text-gray-600">
                     <li>PO pending for 11 days in ERP</li>
                     <li>Supplier avg confirmation time is 4 days</li>
                   </ul>
                 </div>
 
-                <div className="text-xs">
-                  <p className="font-medium text-green-600 mb-1">
-                    Unstructured Data
-                  </p>
+              <div className="text-xs mb-2 bg-white/50 p-2 rounded-lg">
+                  <div className="flex items-center gap-2 mb-1">
+                    <MessageSquare className="inline-block text-green-600 w-3 h-3" />
+                    <p className="font-medium text-green-600 mb-0">
+                      Unstructured Data
+                    </p>
+                  </div>
                   <ul className="list-disc ml-4 text-gray-600">
                     <li>
                       WhatsApp: “Stock confirmation next week” (6 days ago)
@@ -77,6 +85,7 @@ const RevenueAlert = () => {
               </div>
 
               <div className="bg-blue-50 text-blue-700 text-xs p-3 rounded-lg">
+                <Lightbulb className="inline-block w-3 h-3 mr-1" />
                 <strong>StratSync Recommendation:</strong>
                 <ul className="list-disc ml-4 mt-1">
                   <li>Escalate supplier immediately</li>
@@ -86,11 +95,17 @@ const RevenueAlert = () => {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-4">
-              <button className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg">
+            <div className="flex gap-2 mt-4">
+              <button
+                className="bg-red-600 text-white text-sm px-2 py-2 rounded-lg font-semibold shadow-sm transition-all duration-200 hover:bg-blue-700 hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                
                 Escalate Supplier
               </button>
-              <button className="border text-sm px-4 py-2 rounded-lg">
+              <button
+                className="border border-blue-600 text-blue-600 text-sm px-4 py-2 rounded-lg font-semibold bg-white shadow-sm transition-all duration-200 hover:bg-blue-50 hover:text-blue-800 hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span className="inline-block align-middle mr-2">🔄</span>
                 Secure Alternate Stock
               </button>
             </div>
