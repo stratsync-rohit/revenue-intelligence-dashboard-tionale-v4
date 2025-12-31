@@ -111,7 +111,7 @@ const RevenueAlert = () => {
             </div>
           </div>
 
-          {/* Alert 2 */}
+        
           <div className="border-l-4 border-red-500 bg-red-50 rounded-xl p-5 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-1 mb-2">
