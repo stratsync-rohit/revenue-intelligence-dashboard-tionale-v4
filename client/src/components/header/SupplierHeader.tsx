@@ -1,11 +1,10 @@
-import React from "react";
+
 import { ArrowLeft } from "lucide-react";
 
 const SupplierHeader = () => {
   return (
     <header className="bg-white border-b px-6 py-4">
       <div className="flex items-center justify-between">
-        {/* Left: Back + Title */}
         <div className="flex items-start gap-4">
           <button className="mt-1 text-gray-500 hover:text-gray-800">
             <ArrowLeft size={20} />
