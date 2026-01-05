@@ -1,93 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
 
-/* ================= MAIN PAGE ================= */
+
+
+const customerStats = [
+  {
+    title: "Pending Customer Responses",
+    value: "7",
+    subtitle: "Across 4 customers",
+    color: "border-red-500",
+  },
+  {
+    title: "Deals at Risk",
+    value: "3",
+    subtitle: "High probability of slippage",
+    color: "border-orange-500",
+  },
+  {
+    title: "Pipeline at Risk",
+    value: "$1870K",
+    subtitle: "Requires intervention",
+    color: "border-blue-500",
+  },
+  {
+    title: "Total Pipeline",
+    value: "$2.3M",
+    subtitle: "Across all customers",
+    color: "border-green-500",
+  },
+];
+
+const customers = [
+  {
+    id: "CUS-001",
+    name: "Middle East Distributor",
+    country: "UAE",
+    status: "down",
+    pending: 2,
+    lastResponse: "9 days ago",
+    stage: "Commercial Approval",
+    daysInStage: 9,
+    pipeline: "$620K",
+  },
+  {
+    id: "CUS-002",
+    name: "Luxe Beauty Group",
+    country: "France",
+    status: "warning",
+    pending: 1,
+    lastResponse: "4 days ago",
+    stage: "Negotiation",
+    daysInStage: 6,
+    pipeline: "$450K",
+  },
+];
+
 
 const Customers: React.FC = () => {
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const openDrawer = (customer: any) => {
+    setSelectedCustomer(customer);
+    setIsDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setSelectedCustomer(null);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 relative">
       {/* ===== Top Stats ===== */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <StatCard
-          title="Pending Customer Responses"
-          value="7"
-          subtitle="Across 4 customers"
-          color="border-red-500"
-        />
-        <StatCard
-          title="Deals at Risk"
-          value="3"
-          subtitle="High probability of slippage"
-          color="border-orange-500"
-        />
-        <StatCard
-          title="Pipeline at Risk"
-          value="$1870K"
-          subtitle="Requires intervention"
-          color="border-blue-500"
-        />
-        <StatCard
-          title="Total Pipeline"
-          value="$2.3M"
-          subtitle="Across all customers"
-          color="border-green-500"
-        />
+        {customerStats.map((stat, i) => (
+          <StatCard key={i} {...stat} />
+        ))}
       </div>
 
-      {/* ===== Pending Customer Responses ===== */}
-      <h2 className="text-2xl font-semibold mb-6">
-        Pending Customer Responses
-      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
-        <ResponseCard
-          customer="Middle East Distributor"
-          days="9 days"
-          text="Awaiting response on revised pricing proposal"
-          risk="high"
-        />
-        <ResponseCard
-          customer="Middle East Distributor"
-          days="7 days"
-          text="Commercial approval pending from procurement head"
-          risk="high"
-        />
-        <ResponseCard
-          customer="Luxe Beauty Group"
-          days="4 days"
-          text="Waiting for sample approval feedback"
-          risk="medium"
-        />
-        <ResponseCard
-          customer="European Duty Free"
-          days="6 days"
-          text="Awaiting feedback on volume discount proposal"
-          risk="medium"
-        />
-        <ResponseCard
-          customer="North Africa Trading"
-          days="12 days"
-          text="Trade license verification pending"
-          risk="high"
-        />
-        <ResponseCard
-          customer="North Africa Trading"
-          days="10 days"
-          text="Credit application not submitted"
-          risk="high"
-        />
-        <ResponseCard
-          customer="North Africa Trading"
-          days="14 days"
-          text="Introductory call not scheduled"
-          risk="high"
-        />
-      </div>
-
-      {/* ===== All Customers ===== */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-          👥 All Customers
-        </h2>
+        <h2 className="text-2xl font-semibold mb-6">👥 All Customers</h2>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -105,171 +98,178 @@ const Customers: React.FC = () => {
             </thead>
 
             <tbody className="divide-y">
-              <CustomerRow
-                name="Middle East Distributor"
-                code="CUS-001 · UAE"
-                status="down"
-                pending={2}
-                last="9 days ago"
-                stage="Commercial Approval"
-                days={9}
-                pipeline="$620K"
-              />
-              <CustomerRow
-                name="Luxe Beauty Group"
-                code="CUS-002 · France"
-                status="warning"
-                pending={1}
-                last="4 days ago"
-                stage="Negotiation"
-                days={6}
-                pipeline="$450K"
-              />
-              <CustomerRow
-                name="Asia Pacific Retail"
-                code="CUS-003 · Singapore"
-                status="ok"
-                pending={0}
-                last="1 day ago"
-                stage="Contract"
-                days={2}
-                pipeline="$380K"
-              />
-              <CustomerRow
-                name="European Duty Free"
-                code="CUS-004 · Germany"
-                status="warning"
-                pending={1}
-                last="6 days ago"
-                stage="Proposal"
-                days={8}
-                pipeline="$520K"
-              />
-              <CustomerRow
-                name="North Africa Trading"
-                code="CUS-005 · Morocco"
-                status="down"
-                pending={3}
-                last="12 days ago"
-                stage="Qualification"
-                days={14}
-                pipeline="$280K"
-              />
+              {customers.map((customer) => (
+                <CustomerRow
+                  key={customer.id}
+                  customer={customer}
+                  onView={openDrawer}
+                />
+              ))}
             </tbody>
           </table>
         </div>
       </div>
+
+
+      <DrawerOverlay isOpen={isDrawerOpen} onClose={closeDrawer} />
+      <CustomerDrawer
+        customer={selectedCustomer}
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+      />
     </div>
   );
 };
 
 export default Customers;
 
-/* ================= COMPONENTS ================= */
 
-const StatCard = ({
-  title,
-  value,
-  subtitle,
-  color,
-}: {
-  title: string;
-  value: string;
-  subtitle: string;
-  color: string;
-}) => (
-  <div
-    className={`bg-white rounded-xl p-6 border-l-4 ${color} shadow-sm`}
-  >
+
+const StatCard = ({ title, value, subtitle, color }: any) => (
+  <div className={`bg-white rounded-xl p-6 border-l-4 ${color} shadow-sm`}>
     <p className="text-sm text-gray-500 mb-2">{title}</p>
     <h3 className="text-3xl font-bold">{value}</h3>
     <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
   </div>
 );
 
-const ResponseCard = ({
-  customer,
-  days,
-  text,
-  risk,
-}: {
-  customer: string;
-  days: string;
-  text: string;
-  risk: "high" | "medium";
-}) => {
-  const border =
-    risk === "high" ? "border-red-400 bg-red-50" : "border-orange-400 bg-orange-50";
-
-  return (
-    <div className={`rounded-xl p-5 border-l-4 ${border}`}>
-      <div className="flex justify-between mb-3">
-        <span className="px-3 py-1 bg-white rounded-full text-sm font-medium">
-          {customer}
-        </span>
-        <span className="text-sm text-gray-500">{days}</span>
-      </div>
-      <p className="text-gray-800">{text}</p>
-    </div>
-  );
-};
-
 const CustomerRow = ({
-  name,
-  code,
-  status,
-  pending,
-  last,
-  stage,
-  days,
-  pipeline,
-}: any) => {
-  const statusIcon = {
+  customer,
+  onView,
+}: {
+  customer: any;
+  onView: (customer: any) => void;
+}) => {
+  const statusIconMap: Record<"down" | "warning" | "ok", string> = {
     down: "📉",
     warning: "⚠️",
     ok: "✅",
-  }[status];
+  };
 
   return (
     <tr className="text-sm">
       <td className="py-4">
-        <p className="font-medium">{name}</p>
-        <p className="text-gray-500">{code}</p>
+        <p className="font-medium">{customer.name}</p>
+        <p className="text-gray-500">
+          {customer.id} • {customer.country}
+        </p>
       </td>
 
-      <td className="text-lg">{statusIcon}</td>
+      <td className="text-lg">{statusIconMap[customer.status]}</td>
 
       <td>
-        {pending > 0 ? (
+        {customer.pending > 0 ? (
           <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
-            {pending}
+            {customer.pending}
           </span>
         ) : (
           "—"
         )}
       </td>
 
-      <td className={last.includes("days") ? "text-red-500" : "text-gray-600"}>
-        {last}
-      </td>
+      <td className="text-red-500">{customer.lastResponse}</td>
 
       <td>
         <span className="px-3 py-1 border rounded-full text-xs font-medium">
-          {stage}
+          {customer.stage}
         </span>
       </td>
 
-      <td className={days >= 8 ? "text-red-500" : "text-gray-600"}>
-        {days}
+      <td
+        className={
+          customer.daysInStage >= 8 ? "text-red-500" : "text-gray-600"
+        }
+      >
+        {customer.daysInStage}
       </td>
 
-      <td className="font-semibold">{pipeline}</td>
+      <td className="font-semibold">{customer.pipeline}</td>
 
       <td>
-        <button className="text-blue-600 font-medium hover:underline">
+        <button
+          onClick={() => onView(customer)}
+          className="text-blue-600 font-medium hover:underline"
+        >
           View
         </button>
       </td>
     </tr>
   );
 };
+
+/* ================= DRAWER ================= */
+
+const DrawerOverlay = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => (
+  <div
+    onClick={onClose}
+    className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${
+      isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+    }`}
+  />
+);
+
+const CustomerDrawer = ({
+  customer,
+  isOpen,
+  onClose,
+}: {
+  customer: any;
+  isOpen: boolean;
+  onClose: () => void;
+}) => (
+  <div
+    className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-xl p-6 overflow-y-auto
+      transform transition-transform duration-300 ${
+        isOpen ? "translate-x-0" : "translate-x-full"
+      }`}
+  >
+    {customer && (
+      <>
+        {/* Header */}
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h2 className="text-xl font-semibold">{customer.name}</h2>
+            <p className="text-gray-500 text-sm">
+              {customer.id} • {customer.country}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-black text-xl"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <DrawerStat label="Total Pipeline" value={customer.pipeline} />
+          <DrawerStat label="Pending Actions" value={customer.pending} />
+          <DrawerStat label="Deal Stage" value={customer.stage} />
+          <DrawerStat label="Days in Stage" value={customer.daysInStage} />
+        </div>
+
+
+        <div>
+          <h3 className="font-semibold mb-2">Recent Communication</h3>
+          <div className="border rounded-lg p-4 text-sm text-gray-700">
+            We are reviewing the pricing internally. Will revert.
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+);
+
+const DrawerStat = ({ label, value }: any) => (
+  <div className="border rounded-lg p-4">
+    <p className="text-sm text-gray-500">{label}</p>
+    <p className="text-lg font-semibold">{value}</p>
+  </div>
+);

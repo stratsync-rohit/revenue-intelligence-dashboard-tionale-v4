@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 const SupplierHeader = () => {
   return (
-    <header className="bg-white border-b px-6 py-4">
+    <header className="bg-white border-b px-6 py-4 sticky top-0 z-50">
       <div className="flex items-center justify-between">
         <div className="flex items-start gap-4">
           <button className="mt-1 text-gray-500 hover:text-gray-800">

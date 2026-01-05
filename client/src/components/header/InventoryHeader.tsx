@@ -15,7 +15,7 @@ const STATUS: Status[] = [
 
 const InventoryHeader = () => {
   return (
-    <header className="w-full bg-white border-b">
+    <header className="w-full bg-white border-b sticky top-0 z-50">
       <div className="flex items-center justify-between px-6 py-4">
 
         {/* LEFT */}
