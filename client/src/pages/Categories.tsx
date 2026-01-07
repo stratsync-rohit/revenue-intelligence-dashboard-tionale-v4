@@ -9,7 +9,7 @@ import {
   ArrowDownRight,
 } from "lucide-react";
 
-/* ===================== DATA (API READY) ===================== */
+
 
 const categoryAlerts = [
   {
@@ -107,7 +107,7 @@ const summaryCards = [
   { title: "Avg Margin", value: "28.0%", icon: <TrendingUp /> },
 ];
 
-/* ===================== MAIN PAGE ===================== */
+
 
 const Categories: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
@@ -126,7 +126,7 @@ const Categories: React.FC = () => {
   return (
     <div className="min-h-screen bg-white px-8 py-10 space-y-12 relative">
 
-      {/* ===== Category Alerts ===== */}
+      
       <div>
         <h1 className="text-2xl font-semibold mb-6">Category Alerts</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -136,7 +136,7 @@ const Categories: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== Category Table ===== */}
+
       <div className="rounded-xl border shadow-sm">
         <div className="px-6 py-4 border-b font-semibold text-lg flex items-center gap-2">
           <BarChart3 size={18} />
@@ -211,7 +211,7 @@ const AlertCard = ({ title, desc, sub, color }: any) => (
 );
 
 const Row = ({ category, onView }: any) => (
-  <tr className="border-b last:border-none">
+  <tr className="">
     <td className="p-4">
       <div className="font-medium">{category.name}</div>
       <div className="text-gray-500 text-xs">{category.brands}</div>
@@ -308,7 +308,7 @@ const CategoryDrawer = ({ category, isOpen, onClose }: any) => (
         </div>
 
         <div className="border rounded-lg p-4 text-sm text-gray-700">
-          ⚠️ Category has active alerts. Review pricing, inventory, and supplier
+           Category has active alerts. Review pricing, inventory, and supplier
           exposure.
         </div>
       </>

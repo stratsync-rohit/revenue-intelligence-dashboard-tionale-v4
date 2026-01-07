@@ -1,5 +1,5 @@
 import { ArrowLeft, Filter } from "lucide-react";
-import StatusChip from "../common/StatusChip";gi
+import StatusChip from "../common/StatusChip";
 
 const CategoryHeader = () => {
   return (
