@@ -186,7 +186,7 @@ const Categories: React.FC = () => {
 
 export default Categories;
 
-/* ===================== COMPONENTS ===================== */
+
 
 const AlertCard = ({ title, desc, sub, color }: any) => (
   <div
