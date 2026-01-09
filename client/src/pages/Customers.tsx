@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-/* ===================== DATA ===================== */
 
 const pendingResponses = [
   {
@@ -91,9 +90,58 @@ const customers = [
       text: "Contract signed and returned. Please proceed with PO.",
     },
   },
+  {
+    id: "CUS-001",
+    name: "Middle East Distributor",
+    country: "UAE",
+    pipeline: "$620K",
+    activeDeals: 2,
+    deal: {
+      title: "Regional Distribution Agreement",
+      amount: "$420K",
+      risk: "medium risk",
+    },
+    lastMessage: {
+      time: "9 days ago",
+      text: "Awaiting response on revised pricing proposal.",
+    },
+  },
+  {
+    id: "CUS-002",
+    name: "Luxe Beauty Group",
+    country: "France",
+    pipeline: "$450K",
+    activeDeals: 1,
+    deal: {
+      title: "Private Label Contract",
+      amount: "$450K",
+      risk: "low risk",
+    },
+    lastMessage: {
+      time: "4 days ago",
+      text: "Waiting for sample approval feedback from marketing team.",
+    },
+  },
+  {
+    id: "CUS-004",
+    name: "North Africa Trading",
+    country: "Morocco",
+    pipeline: "$520K",
+    activeDeals: 1,
+    deal: {
+      title: "Import & Trade License Deal",
+      amount: "$520K",
+      risk: "high risk",
+    },
+    lastMessage: {
+      time: "12 days ago",
+      text: "Trade license verification still pending with authorities.",
+    },
+  },
 ];
 
-/* ===================== MAIN ===================== */
+
+
 
 const Customers: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
