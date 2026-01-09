@@ -1,6 +1,51 @@
 import React, { useState } from "react";
 
+/* ===================== DATA ===================== */
 
+const pendingResponses = [
+  {
+    customer: "Middle East Distributor",
+    message: "Awaiting response on revised pricing proposal",
+    days: 9,
+    severity: "high",
+  },
+  {
+    customer: "Middle East Distributor",
+    message: "Commercial approval pending from procurement head",
+    days: 7,
+    severity: "high",
+  },
+  {
+    customer: "Luxe Beauty Group",
+    message: "Waiting for sample approval feedback",
+    days: 4,
+    severity: "medium",
+  },
+  {
+    customer: "European Duty Free",
+    message: "Awaiting feedback on volume discount proposal",
+    days: 6,
+    severity: "medium",
+  },
+  {
+    customer: "North Africa Trading",
+    message: "Trade license verification pending",
+    days: 12,
+    severity: "high",
+  },
+  {
+    customer: "North Africa Trading",
+    message: "Credit application not submitted",
+    days: 10,
+    severity: "high",
+  },
+  {
+    customer: "North Africa Trading",
+    message: "Introductory call not scheduled",
+    days: 14,
+    severity: "high",
+  },
+];
 
 const customerStats = [
   {
@@ -31,46 +76,31 @@ const customerStats = [
 
 const customers = [
   {
-    id: "CUS-001",
-    name: "Middle East Distributor",
-    country: "UAE",
-    status: "down",
-    pending: 2,
-    lastResponse: "9 days ago",
-    stage: "Commercial Approval",
-    daysInStage: 9,
-    pipeline: "$620K",
-  },
-  {
-    id: "CUS-002",
-    name: "Luxe Beauty Group",
-    country: "France",
-    status: "warning",
-    pending: 1,
-    lastResponse: "4 days ago",
-    stage: "Negotiation",
-    daysInStage: 6,
-    pipeline: "$450K",
+    id: "CUS-003",
+    name: "Asia Pacific Retail",
+    country: "Singapore",
+    pipeline: "$380K",
+    activeDeals: 1,
+    deal: {
+      title: "Annual Contract 2025",
+      amount: "$380K",
+      risk: "low risk",
+    },
+    lastMessage: {
+      time: "1 day ago",
+      text: "Contract signed and returned. Please proceed with PO.",
+    },
   },
 ];
 
+/* ===================== MAIN ===================== */
 
 const Customers: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const openDrawer = (customer: any) => {
-    setSelectedCustomer(customer);
-    setIsDrawerOpen(true);
-  };
-
-  const closeDrawer = () => {
-    setIsDrawerOpen(false);
-    setSelectedCustomer(null);
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 p-8 relative">
+    <div className="min-h-screen bg-gray-50 p-8">
       {/* ===== Top Stats ===== */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
         {customerStats.map((stat, i) => (
@@ -78,44 +108,69 @@ const Customers: React.FC = () => {
         ))}
       </div>
 
+      {/* ===== Pending Customer Responses ===== */}
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold mb-4">
+          Pending Customer Responses
+        </h2>
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-2xl font-semibold mb-6">👥 All Customers</h2>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="text-gray-500 text-sm border-b">
-                <th className="pb-3">Customer</th>
-                <th>Status</th>
-                <th>Pending</th>
-                <th>Last Response</th>
-                <th>Deal Stage</th>
-                <th>Days in Stage</th>
-                <th>Pipeline</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y">
-              {customers.map((customer) => (
-                <CustomerRow
-                  key={customer.id}
-                  customer={customer}
-                  onView={openDrawer}
-                />
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {pendingResponses.map((item, i) => (
+            <PendingResponseCard key={i} item={item} />
+          ))}
         </div>
       </div>
 
+      {/* ===== Customers Table ===== */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-2xl font-semibold mb-6">👥 All Customers</h2>
 
-      <DrawerOverlay isOpen={isDrawerOpen} onClose={closeDrawer} />
+        <table className="w-full text-left">
+          <thead>
+            <tr className="text-gray-500 text-sm border-b">
+              <th className="pb-3">Customer</th>
+              <th>Pipeline</th>
+              <th>Active Deals</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y">
+            {customers.map((customer) => (
+              <tr key={customer.id} className="text-sm">
+                <td className="py-4">
+                  <p className="font-medium">{customer.name}</p>
+                  <p className="text-gray-500">
+                    {customer.id} • {customer.country}
+                  </p>
+                </td>
+                <td className="font-semibold">{customer.pipeline}</td>
+                <td>{customer.activeDeals}</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      setSelectedCustomer(customer);
+                      setIsDrawerOpen(true);
+                    }}
+                    className="text-blue-600 font-medium hover:underline"
+                  >
+                    View
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <DrawerOverlay
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
       <CustomerDrawer
         customer={selectedCustomer}
         isOpen={isDrawerOpen}
-        onClose={closeDrawer}
+        onClose={() => setIsDrawerOpen(false)}
       />
     </div>
   );
@@ -123,153 +178,109 @@ const Customers: React.FC = () => {
 
 export default Customers;
 
-
+/* ===================== COMPONENTS ===================== */
 
 const StatCard = ({ title, value, subtitle, color }: any) => (
-  <div className={`bg-white rounded-xl p-6 border-l-4 ${color} shadow-sm`}>
-    <p className="text-sm text-gray-500 mb-2">{title}</p>
+  <div className={`bg-white rounded-xl p-6 border-l-4 ${color}`}>
+    <p className="text-sm text-gray-500">{title}</p>
     <h3 className="text-3xl font-bold">{value}</h3>
-    <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+    <p className="text-sm text-gray-500">{subtitle}</p>
   </div>
 );
 
-const CustomerRow = ({
-  customer,
-  onView,
-}: {
-  customer: any;
-  onView: (customer: any) => void;
-}) => {
-  const statusIconMap: Record<"down" | "warning" | "ok", string> = {
-    down: "📉",
-    warning: "⚠️",
-    ok: "✅",
-  };
+const PendingResponseCard = ({ item }: any) => {
+  const border =
+    item.severity === "high" ? "border-red-500" : "border-orange-400";
 
   return (
-    <tr className="text-sm">
-      <td className="py-4">
-        <p className="font-medium">{customer.name}</p>
-        <p className="text-gray-500">
-          {customer.id} • {customer.country}
-        </p>
-      </td>
-
-      <td className="text-lg">{statusIconMap[customer.status]}</td>
-
-      <td>
-        {customer.pending > 0 ? (
-          <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
-            {customer.pending}
-          </span>
-        ) : (
-          "—"
-        )}
-      </td>
-
-      <td className="text-red-500">{customer.lastResponse}</td>
-
-      <td>
-        <span className="px-3 py-1 border rounded-full text-xs font-medium">
-          {customer.stage}
+    <div
+      className={`bg-red-50 rounded-xl p-4 border-l-4 ${border} flex justify-between`}
+    >
+      <div>
+        <span className="inline-block bg-white border rounded-full px-3 py-1 text-sm font-medium mb-2">
+          {item.customer}
         </span>
-      </td>
-
-      <td
-        className={
-          customer.daysInStage >= 8 ? "text-red-500" : "text-gray-600"
-        }
-      >
-        {customer.daysInStage}
-      </td>
-
-      <td className="font-semibold">{customer.pipeline}</td>
-
-      <td>
-        <button
-          onClick={() => onView(customer)}
-          className="text-blue-600 font-medium hover:underline"
-        >
-          View
-        </button>
-      </td>
-    </tr>
+        <p className="text-sm">{item.message}</p>
+      </div>
+      <div className="text-sm text-gray-500">⏱ {item.days} days</div>
+    </div>
   );
 };
 
+/* ===================== DRAWER ===================== */
 
-
-const DrawerOverlay = ({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => (
+const DrawerOverlay = ({ isOpen, onClose }: any) => (
   <div
     onClick={onClose}
-    className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 ${
+    className={`fixed inset-0 bg-black/40 z-40 ${
       isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
     }`}
   />
 );
 
-const CustomerDrawer = ({
-  customer,
-  isOpen,
-  onClose,
-}: {
-  customer: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => (
+const CustomerDrawer = ({ customer, isOpen, onClose }: any) => (
   <div
-    className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-xl p-6 overflow-y-auto
-      transform transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      }`}
+    className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-xl
+    transform transition-transform duration-300 ${
+      isOpen ? "translate-x-0" : "translate-x-full"
+    }`}
   >
     {customer && (
-      <>
-        {/* Header */}
-        <div className="flex justify-between items-start mb-6">
+      <div className="p-6 flex flex-col h-full">
+        <div className="flex justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold">{customer.name}</h2>
-            <p className="text-gray-500 text-sm">
+            <p className="text-sm text-gray-500">
               {customer.id} • {customer.country}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-black text-xl"
-          >
-            ✕
-          </button>
+          <button onClick={onClose}>✕</button>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <DrawerStat label="Total Pipeline" value={customer.pipeline} />
-          <DrawerStat label="Pending Actions" value={customer.pending} />
-          <DrawerStat label="Deal Stage" value={customer.stage} />
-          <DrawerStat label="Days in Stage" value={customer.daysInStage} />
-        </div>
-
-
-        <div>
-          <h3 className="font-semibold mb-2">Recent Communication</h3>
-          <div className="border rounded-lg p-4 text-sm text-gray-700">
-            We are reviewing the pricing internally. Will revert.
+          <div className="border rounded-xl p-4">
+            <p className="text-sm text-gray-500">Total Pipeline</p>
+            <p className="text-2xl font-bold">{customer.pipeline}</p>
+          </div>
+          <div className="border rounded-xl p-4">
+            <p className="text-sm text-gray-500">Active Deals</p>
+            <p className="text-2xl font-bold">{customer.activeDeals}</p>
           </div>
         </div>
-      </>
-    )}
-  </div>
-);
 
-const DrawerStat = ({ label, value }: any) => (
-  <div className="border rounded-lg p-4">
-    <p className="text-sm text-gray-500">{label}</p>
-    <p className="text-lg font-semibold">{value}</p>
+        <div className="mb-6">
+          <h3 className="font-semibold mb-2">Active Deals</h3>
+          <div className="bg-gray-50 rounded-xl p-4 flex justify-between">
+            <div>
+              <p className="font-medium">{customer.deal.title}</p>
+              <p className="text-sm text-gray-500">Contract</p>
+            </div>
+            <div className="text-right">
+              <p className="font-semibold">{customer.deal.amount}</p>
+              <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                {customer.deal.risk}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold mb-2">Recent Communications</h3>
+          <div className="border rounded-xl p-4 text-sm">
+            <p className="text-gray-500">{customer.lastMessage.time}</p>
+            <p>{customer.lastMessage.text}</p>
+          </div>
+        </div>
+
+        <div className="mt-auto flex gap-3">
+          <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg">
+            Send Follow-up
+          </button>
+          <button className="flex-1 border py-2 rounded-lg">
+            Schedule Call
+          </button>
+        </div>
+      </div>
+    )}
   </div>
 );
