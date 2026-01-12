@@ -149,14 +149,14 @@ const Customers: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      {/* ===== Top Stats ===== */}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
         {customerStats.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
 
-      {/* ===== Pending Customer Responses ===== */}
+   
       <div className="mb-10">
         <h2 className="text-xl font-semibold mb-4">
           Pending Customer Responses
@@ -169,7 +169,7 @@ const Customers: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== Customers Table ===== */}
+
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-2xl font-semibold mb-6">👥 All Customers</h2>
 
@@ -226,7 +226,7 @@ const Customers: React.FC = () => {
 
 export default Customers;
 
-/* ===================== COMPONENTS ===================== */
+
 
 const StatCard = ({ title, value, subtitle, color }: any) => (
   <div className={`bg-white rounded-xl p-6 border-l-4 ${color}`}>
@@ -255,7 +255,7 @@ const PendingResponseCard = ({ item }: any) => {
   );
 };
 
-/* ===================== DRAWER ===================== */
+
 
 const DrawerOverlay = ({ isOpen, onClose }: any) => (
   <div

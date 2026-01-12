@@ -6,7 +6,7 @@ const CommandCenter = () => {
     <>
     <RevenueAlert />
 
-      {/* ===== Section 1 ===== */}
+      
       <div className="border rounded-xl p-6 m-6 bg-white">
         <h3 className="text-lg font-semibold mb-3">
           Why These Three Scenarios Matter Together
@@ -45,7 +45,7 @@ const CommandCenter = () => {
         </p>
       </div>
 
-      {/* ===== Section 5: Deal Pipeline with Intelligence Overlay ===== */}
+    
       <div className="border rounded-2xl p-6 m-6 bg-white">
         <div className="flex items-center gap-2 mb-6">
           <span className="text-blue-500 text-xl">🗂️</span>
@@ -71,7 +71,7 @@ const CommandCenter = () => {
             </thead>
 
             <tbody className="text-sm">
-              {/* Row 1 */}
+         
               <tr className="border-b hover:bg-gray-50">
                 <td className="py-4 px-4 font-semibold">ME Distributor Q4</td>
                 <td className="px-4">UAE Distributor</td>
@@ -93,7 +93,7 @@ const CommandCenter = () => {
                 <td className="px-4 text-gray-400">›</td>
               </tr>
 
-              {/* Row 2 */}
+           
               <tr className="border-b hover:bg-gray-50">
                 <td className="py-4 px-4 font-semibold">EU Retail Launch</td>
                 <td className="px-4">Sephora France</td>
@@ -115,7 +115,7 @@ const CommandCenter = () => {
                 <td className="px-4 text-gray-400">›</td>
               </tr>
 
-              {/* Row 3 */}
+       
               <tr className="border-b hover:bg-gray-50">
                 <td className="py-4 px-4 font-semibold">GCC Exclusive</td>
                 <td className="px-4">Dubai Luxury Retail</td>
@@ -135,7 +135,7 @@ const CommandCenter = () => {
                 <td className="px-4 text-gray-400">›</td>
               </tr>
 
-              {/* Row 4 */}
+            
               <tr className="hover:bg-gray-50">
                 <td className="py-4 px-4 font-semibold">
                   Asia Pacific Roll-out
@@ -163,7 +163,7 @@ const CommandCenter = () => {
         </div>
       </div>
 
-      {/* ===== Section 3: Inventory Intelligence ===== */}
+    
       <div className="border rounded-2xl p-6 m-6 bg-white">
         <div className="flex items-center gap-2 mb-6">
           <span className="text-orange-500 text-xl">📦</span>
@@ -171,7 +171,7 @@ const CommandCenter = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Critical Inventory */}
+       
           <div className="border-l-4 border-red-500 rounded-xl bg-red-50 p-5">
             <div className="flex items-center gap-2 mb-3 text-red-600 font-semibold">
               ⚠️ Critical Inventory
@@ -194,7 +194,6 @@ const CommandCenter = () => {
             </div>
           </div>
 
-          {/* Watchlist */}
           <div className="border-l-4 border-yellow-400 rounded-xl bg-yellow-50 p-5">
             <div className="flex items-center gap-2 mb-3 text-yellow-700 font-semibold">
               ⚠️ Watchlist
@@ -235,7 +234,7 @@ const CommandCenter = () => {
             </div>
           </div>
 
-          {/* Healthy */}
+     
           <div className="border-l-4 border-green-500 rounded-xl bg-green-50 p-5 flex items-center justify-center">
             <div className="text-center">
               <div className="text-4xl font-bold text-green-600 mb-1">24</div>
@@ -245,7 +244,7 @@ const CommandCenter = () => {
         </div>
       </div>
 
-      {/* ===== Section 2 ===== */}
+     
       <div className="border rounded-2xl p-6 m-6 bg-white">
         <div className="flex items-center gap-2 mb-6">
           <span className="text-blue-500 text-xl">🗂️</span>
@@ -255,7 +254,7 @@ const CommandCenter = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-8">
-          {/* Left cards */}
+         
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1">
             {[
               "CRM Deals & Stages",
@@ -275,14 +274,14 @@ const CommandCenter = () => {
             ))}
           </div>
 
-          {/* Arrows */}
+          
           <div className="flex flex-col gap-3 text-gray-400 text-xl">
             <span>→</span>
             <span>→</span>
             <span>→</span>
           </div>
 
-          {/* Engine */}
+     
           <div className="w-44 h-44 rounded-full border-[12px] border-blue-200 flex items-center justify-center text-center">
             <div>
               <p className="text-sm font-semibold text-gray-700">
