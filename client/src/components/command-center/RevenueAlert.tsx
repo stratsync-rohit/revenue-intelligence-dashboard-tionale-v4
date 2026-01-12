@@ -6,9 +6,6 @@ import {
   Lightbulb,
 } from "lucide-react";
 
-/* ===============================
-   SAMPLE DATA (API READY)
-================================ */
 const alertsData = [
   {
     id: 1,
@@ -137,9 +134,7 @@ const alertsData = [
   }
 ];
 
-/* ===============================
-   THEME CONFIG
-================================ */
+
 const themeMap = {
   red: {
     border: "border-red-500",
