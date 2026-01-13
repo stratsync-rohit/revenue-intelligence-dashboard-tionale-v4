@@ -18,8 +18,8 @@ const DealPipelineTable = () => (
             <th className="text-left py-3 px-4">SKU</th>
             <th className="text-left py-3 px-4">Deal Value</th>
             <th className="text-left py-3 px-4">Stage</th>
-            <th className="text-left py-3 px-4">Risk</th>
             <th className="text-left py-3 px-4">Signal</th>
+            <th className="text-left py-3 px-4">Risk</th>
             <th />
           </tr>
         </thead>
@@ -35,12 +35,12 @@ const DealPipelineTable = () => (
                 Commercial Approval
               </span>
             </td>
+            <td className="px-4 text-gray-600">
+              Supplier confirmation missing…
+            </td>
             <td className="px-4 flex items-center gap-2 text-red-600">
               <span className="w-2 h-2 rounded-full bg-red-500" />
               High
-            </td>
-            <td className="px-4 text-gray-600">
-              Supplier confirmation missing…
             </td>
             <td className="px-4 text-gray-400">›</td>
           </tr>
@@ -55,12 +55,12 @@ const DealPipelineTable = () => (
                 Contract Review
               </span>
             </td>
+            <td className="px-4 text-gray-600">
+              Lead time exceeds delivery…
+            </td>
             <td className="px-4 flex items-center gap-2 text-yellow-600">
               <span className="w-2 h-2 rounded-full bg-yellow-500" />
               Medium
-            </td>
-            <td className="px-4 text-gray-600">
-              Lead time exceeds delivery…
             </td>
             <td className="px-4 text-gray-400">›</td>
           </tr>
@@ -75,11 +75,11 @@ const DealPipelineTable = () => (
                 Negotiation
               </span>
             </td>
+            <td className="px-4 text-gray-600">On track</td>
             <td className="px-4 flex items-center gap-2 text-green-600">
               <span className="w-2 h-2 rounded-full bg-green-500" />
               Low
             </td>
-            <td className="px-4 text-gray-600">On track</td>
             <td className="px-4 text-gray-400">›</td>
           </tr>
           <tr className="hover:bg-gray-50">
@@ -93,12 +93,12 @@ const DealPipelineTable = () => (
                 Final Approval
               </span>
             </td>
+            <td className="px-4 text-gray-600">
+              Payment terms under discussion…
+            </td>
             <td className="px-4 flex items-center gap-2 text-yellow-600">
               <span className="w-2 h-2 rounded-full bg-yellow-500" />
               Medium
-            </td>
-            <td className="px-4 text-gray-600">
-              Payment terms under discussion…
             </td>
             <td className="px-4 text-gray-400">›</td>
           </tr>
