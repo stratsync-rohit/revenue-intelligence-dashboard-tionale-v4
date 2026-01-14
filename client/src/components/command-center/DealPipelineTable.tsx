@@ -1,6 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const deals = [
+type Deal = {
+  name: string;
+  customer: string;
+  supplier: string;
+  sku: string;
+  value: string;
+  stage: string;
+  signal: string;
+  risk: string;
+  margin: string;
+  inventory: string;
+  whatsapp: string;
+  email: string;
+};
+
+const deals: Deal[] = [
   {
     name: "ME Distributor Q4",
     customer: "UAE Distributor",
@@ -33,7 +48,7 @@ const deals = [
 ];
 
 const DealPipelineTable = () => {
-  const [selectedDeal, setSelectedDeal] = useState(null);
+  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
 
   return (
     <>
