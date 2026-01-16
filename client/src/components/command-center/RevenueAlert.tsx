@@ -185,9 +185,7 @@ const RevenueAlert = () => {
                   <h4 className="font-semibold text-sm">
                     {alert.title}
                   </h4>
-                  <span className="ml-auto text-xs bg-white px-2 py-0.5 rounded-full">
-                    {alert.priority}
-                  </span>
+                 
                 </div>
 
                 <p className="text-sm italic text-gray-600 mb-4">

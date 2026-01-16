@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-type Deal = {
+import { Layers } from 'lucide-react';
+import { Eye } from "lucide-react";
+
+
+export type Deal = {
   name: string;
   customer: string;
   supplier: string;
@@ -55,7 +59,8 @@ const DealPipelineTable = () => {
       {/* TABLE */}
       <div className="border rounded-2xl p-6 m-6 bg-white">
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-blue-500 text-xl">🗂️</span>
+          
+          <Layers className="text-[#3B82F6] text-xs" size={21} />
           <h3 className="text-lg font-semibold">
             Deal Pipeline with Intelligence Overlay
           </h3>
@@ -118,9 +123,10 @@ const DealPipelineTable = () => {
                 <td className="px-4">
                   <button
                     onClick={() => setSelectedDeal(deal)}
-                    className="text-blue-600 text-sm font-semibold hover:underline"
+                    className="text-black text-sm font-semibold hover:underline"
                   >
-                    View
+                    <Eye className="inline-block w-4 h-4 mr-1" />
+                   
                   </button>
                 </td>
               </tr>
@@ -129,7 +135,7 @@ const DealPipelineTable = () => {
         </table>
       </div>
 
-      {/* BACKDROP */}
+ 
       {selectedDeal && (
         <div
           className="fixed inset-0 bg-black/30 z-40"
@@ -137,7 +143,7 @@ const DealPipelineTable = () => {
         />
       )}
 
-      {/* SIDEBAR */}
+  
       <div
         className={`fixed top-0 right-0 h-full w-[420px] bg-white z-50 shadow-xl
         transform transition-transform duration-300
@@ -145,7 +151,6 @@ const DealPipelineTable = () => {
       >
         {selectedDeal && (
           <div className="p-6 flex flex-col h-full">
-            {/* Header */}
             <div className="flex justify-between items-start mb-6">
               <h2 className="text-xl font-semibold">
                 {selectedDeal.name}
@@ -157,8 +162,6 @@ const DealPipelineTable = () => {
                 ✕
               </button>
             </div>
-
-            {/* Content */}
             <div className="space-y-4 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Deal Value</span>
@@ -166,11 +169,8 @@ const DealPipelineTable = () => {
                   {selectedDeal.value}
                 </span>
               </div>
-
               <div className="flex justify-between">
-                <span className="text-gray-500">
-                  Margin vs Target
-                </span>
+                <span className="text-gray-500">Margin vs Target</span>
                 <span
                   className={`font-semibold ${
                     selectedDeal.margin.startsWith("-")
@@ -181,36 +181,19 @@ const DealPipelineTable = () => {
                   {selectedDeal.margin}
                 </span>
               </div>
-
               <div className="bg-green-50 p-3 rounded-xl">
-                <p className="font-semibold mb-1">
-                  WhatsApp Snippet
-                </p>
-                <p className="text-gray-700">
-                  {selectedDeal.whatsapp}
-                </p>
+                <p className="font-semibold mb-1">WhatsApp Snippet</p>
+                <p className="text-gray-700">{selectedDeal.whatsapp}</p>
               </div>
-
               <div className="bg-purple-50 p-3 rounded-xl">
-                <p className="font-semibold mb-1">
-                  Email Excerpt
-                </p>
-                <p className="text-gray-700">
-                  {selectedDeal.email}
-                </p>
+                <p className="font-semibold mb-1">Email Excerpt</p>
+                <p className="text-gray-700">{selectedDeal.email}</p>
               </div>
-
               <div className="bg-orange-50 p-4 rounded-xl">
-                <p className="font-semibold text-lg">
-                  {selectedDeal.inventory}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Available in warehouse
-                </p>
+                <p className="font-semibold text-lg">{selectedDeal.inventory}</p>
+                <p className="text-sm text-gray-600">Available in warehouse</p>
               </div>
             </div>
-
-            {/* CTA */}
             <button className="mt-auto bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition">
               Take Action on Deal
             </button>
