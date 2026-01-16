@@ -155,13 +155,13 @@ const themeMap = {
 const RevenueAlert = () => {
   return (
     <div className="border rounded-2xl p-6 m-6 bg-white">
-      {/* Header */}
+      
       <div className="flex items-center gap-2 mb-6">
         <AlertTriangle className="text-red-500" />
         <h3 className="text-lg font-semibold">Priority Revenue Alerts</h3>
       </div>
 
-      {/* Cards – Horizontal Scroll */}
+  
       <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth">
         {alertsData.map((alert) => {
           const theme = themeMap[alert.color];
@@ -170,7 +170,7 @@ const RevenueAlert = () => {
             <div
               key={alert.id}
               className={`
-                border-l-4 ${theme.border} ${theme.bg}
+                border-l-2 ${theme.border} ${theme.bg}
                 rounded-xl p-6
                 flex flex-col justify-between
                 min-h-[780px]
@@ -179,7 +179,7 @@ const RevenueAlert = () => {
               `}
             >
               <div>
-                {/* Title */}
+               
                 <div className="flex items-center gap-2 mb-2">
                   {theme.icon}
                   <h4 className="font-semibold text-sm">
