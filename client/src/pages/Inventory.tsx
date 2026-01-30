@@ -341,10 +341,10 @@ const SkuRow = ({ sku, onView }: any) => (
       </div>
     </td>
     <td className="text-center">
-      {sku.status === "healthy" && "✅"}
-      {sku.status === "warning" && "⚠️"}
-      {sku.status === "aging" && "🧴"}
-      {sku.status === "down" && "📉"}
+      {sku.status === "healthy" && <CheckCircle className="inline text-green-500" size={18} />}
+      {sku.status === "warning" && <AlertTriangle className="inline text-yellow-500" size={18} />}
+      {sku.status === "aging" && <Archive className="inline text-orange-400" size={18} />}
+      {sku.status === "down" && <Box className="inline text-red-500" size={18} />}
     </td>
     <td className="text-center font-medium">{sku.qty}</td>
     <td className="text-center">
