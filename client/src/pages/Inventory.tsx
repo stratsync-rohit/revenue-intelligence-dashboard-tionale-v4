@@ -4,10 +4,12 @@ import {
   Archive,
   DollarSign,
   Package,
+   Box,
+ 
   CheckCircle,
 } from "lucide-react";
 
-/* ===================== DATA (API READY) ===================== */
+
 
 const inventoryStats = [
   {
@@ -173,7 +175,7 @@ const inventorySkus = [
   },
 ];
 
-/* ===================== MAIN PAGE ===================== */
+
 
 const Inventory: React.FC = () => {
   const [selectedSku, setSelectedSku] = useState<any>(null);
@@ -192,18 +194,18 @@ const Inventory: React.FC = () => {
   return (
     <div className="min-h-screen bg-white px-8 py-10 space-y-12 relative">
 
-      {/* ===== TOP KPI CARDS ===== */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         {inventoryStats.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
 
-      {/* ===== ALERTS SECTION ===== */}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="rounded-xl border p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-red-600 flex items-center gap-2 mb-6">
-            <AlertTriangle size={20} />
+            <AlertTriangle className="mb-1" size={20} />
             Critical Stock Alerts
           </h2>
 
@@ -224,10 +226,10 @@ const Inventory: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== SKU TABLE ===== */}
+     
       <div className="rounded-xl border shadow-sm">
-        <div className="px-6 py-4 border-b font-semibold text-lg">
-          📦 All Inventory SKUs
+        <div className=" flex px-6 py-4 border-b font-semibold text-lg">
+          < Box className="mr-2" /> All Inventory SKUs
         </div>
 
         <table className="w-full text-sm">
@@ -253,7 +255,7 @@ const Inventory: React.FC = () => {
         </table>
       </div>
 
-      {/* ===== SIDE DRAWER ===== */}
+     
       <DrawerOverlay isOpen={isDrawerOpen} onClose={closeDrawer} />
       <SkuDrawer sku={selectedSku} isOpen={isDrawerOpen} onClose={closeDrawer} />
     </div>
@@ -287,12 +289,12 @@ const StatCard = ({ title, value, sub, color, icon }: any) => (
 
 const CriticalCard = ({ title, sku, badge, points, action }: any) => (
   <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-    <div className="flex justify-between mb-2">
+    <div className="flex justify-between items-center mb-2">
       <div>
         <h4 className="font-semibold">{title}</h4>
         <p className="text-sm text-gray-500">{sku}</p>
       </div>
-      <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
+      <span className="inline-flex items-center bg-red-500 text-white text-xs font-semibold px-4 py-1 rounded-full shadow-sm border border-red-600">
         {badge}
       </span>
     </div>
@@ -307,12 +309,12 @@ const CriticalCard = ({ title, sku, badge, points, action }: any) => (
 
 const AgingCard = ({ title, sku, badge, expired }: any) => (
   <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-    <div className="flex justify-between mb-2">
+    <div className="flex justify-between items-center mb-2">
       <div>
         <h4 className="font-semibold">{title}</h4>
         <p className="text-sm text-gray-500">{sku}</p>
       </div>
-      <span className="bg-orange-200 text-orange-700 text-xs px-3 py-1 rounded-full">
+      <span className="inline-flex items-center bg-orange-200 text-orange-700 text-xs font-semibold px-4 py-1 rounded-full shadow-sm border border-orange-400">
         {badge}
       </span>
     </div>
