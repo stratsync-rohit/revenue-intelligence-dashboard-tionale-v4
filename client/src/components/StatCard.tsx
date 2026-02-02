@@ -28,8 +28,8 @@ const StatCardComponent: React.FC<Props> = ({ card, style, className }) => {
   aria-label={`Stat card: ${card.label}`}
   style={style}
 >
-  {/* Header: Label + Delta badge */}
-  <div className="card-header flex items-center justify-between gap-2">
+
+  <div className="card-header flex items justify-between gap-2">
     <p
       className="stat-card-label font-medium uppercase
                  text-[10px] sm:text-xs md:text-sm

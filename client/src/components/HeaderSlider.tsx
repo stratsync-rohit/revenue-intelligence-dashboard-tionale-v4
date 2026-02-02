@@ -30,7 +30,7 @@ const HeaderSlider: React.FC<HeaderSliderProps> = ({ activeTab, onChange, classN
     const btnRect = btn.getBoundingClientRect();
     const contRect = container.getBoundingClientRect();
     
-    // Get the computed padding of the container
+
     const computedStyle = window.getComputedStyle(container);
     const paddingLeft = parseFloat(computedStyle.paddingLeft);
 
@@ -66,7 +66,7 @@ const HeaderSlider: React.FC<HeaderSliderProps> = ({ activeTab, onChange, classN
         style={{ backgroundColor: "rgb(var(--color-bg-tertiary))" }}
         role="tablist"
       >
-        {/* Slider */}
+
         <span
           aria-hidden
           className="absolute inset-0.5 sm:inset-1 rounded-full sm:rounded-full transition-all duration-300 ease-out"
