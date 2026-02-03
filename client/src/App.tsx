@@ -3,7 +3,6 @@ import AppRouter from "./router/Router";
 import React, { useEffect } from "react";
 
 
-// TypeScript: Add global window.USER_CSS_URL declaration
 declare global {
   interface Window {
     USER_CSS_URL?: string;

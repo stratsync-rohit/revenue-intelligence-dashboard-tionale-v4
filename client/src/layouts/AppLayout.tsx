@@ -27,7 +27,7 @@ const AppLayout = () => {
     <>
       {renderHeader()}
 
-      {/* 👇 SMOOTH PAGE TRANSITION */}
+     
       <AnimatePresence mode="wait">
         {/* <motion.main
           key={location.pathname}
