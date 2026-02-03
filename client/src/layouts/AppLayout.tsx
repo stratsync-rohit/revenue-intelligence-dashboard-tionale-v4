@@ -29,16 +29,16 @@ const AppLayout = () => {
 
      
       <AnimatePresence mode="wait">
-        {/* <motion.main
+        <motion.main
           key={location.pathname}
           initial={{ opacity: 0, y: 1 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
           className="min-h-screen bg-gray-50"
-        > */}
+        >
           <Outlet />
-        {/* </motion.main> */}
+        </motion.main>
       </AnimatePresence>
 
       <Footer />
