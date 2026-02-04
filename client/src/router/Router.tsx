@@ -9,6 +9,7 @@ import Customers from "../pages/Customers";
 import Inventory from "../pages/Inventory";
 import Categories from "../pages/Categories";
 import NotFound from "../pages/NotFound";
+import Offer from "../pages/Offer";
 
 
 
@@ -20,6 +21,7 @@ const AppRouter = () => {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/command-center" element={<CommandCenter />} />
+          <Route path="/offers" element={<Offer />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/inventory" element={<Inventory />} />

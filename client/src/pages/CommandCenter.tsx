@@ -1,6 +1,6 @@
 import RevenueAlert from "../components/command-center/RevenueAlert";
 import DealPipelineTable from "../components/command-center/DealPipelineTable";
-import { Box, TriangleAlert } from "lucide-react";
+import { Box} from "lucide-react";
 
 const CommandCenter = () => {
   return (
