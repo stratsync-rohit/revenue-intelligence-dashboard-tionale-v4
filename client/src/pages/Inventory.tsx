@@ -375,6 +375,21 @@ const DrawerOverlay = ({ isOpen, onClose }: any) => (
   />
 );
 
+const ProgressRow = ({ label, value, color }) => (
+  <div className="mb-3">
+    <div className="flex justify-between text-sm mb-1">
+      <span>{label}</span>
+      <span>{value}%</span>
+    </div>
+    <div className="w-full h-2 bg-gray-100 rounded">
+      <div
+        className={`h-2 rounded ${color}`}
+        style={{ width: `${value}%` }}
+      />
+    </div>
+  </div>
+);
+
 const SkuDrawer = ({ sku, isOpen, onClose }: any) => (
   <div
     className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-xl p-6 overflow-y-auto
@@ -383,28 +398,93 @@ const SkuDrawer = ({ sku, isOpen, onClose }: any) => (
       }`}
   >
     {sku && (
-      <>
-        <div className="flex justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-semibold">{sku.name}</h2>
-            <p className="text-sm text-gray-500">
-              {sku.id} • {sku.category}
-            </p>
-          </div>
-          <button onClick={onClose} className="text-xl">✕</button>
-        </div>
+     <>
+  {/* Header */}
+  <div className="flex justify-between mb-6">
+    <div>
+      <h2 className="text-xl font-semibold">{sku.name}</h2>
+      <p className="text-sm text-gray-500">
+        {sku.id} • {sku.category}
+      </p>
+    </div>
+    <button onClick={onClose} className="text-xl">✕</button>
+  </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <DrawerStat label="Stock Qty" value={sku.qty} />
-          <DrawerStat label="Days Cover" value={sku.days} />
-          <DrawerStat label="Cost Value" value={sku.cost} />
-          <DrawerStat label="Revenue Exposure" value={sku.exposure ?? "—"} />
-        </div>
+  {/* Stats */}
+  <div className="grid grid-cols-2 gap-4 mb-6">
+    <DrawerStat label="Stock Quantity" value={`${sku.qty} units`} />
+    <DrawerStat label="Days of Cover" value={`${sku.days} days`} />
+    <DrawerStat label="Cost Value" value={sku.cost} />
+    <DrawerStat label="Revenue Exposure" value={sku.exposure ?? "—"} />
+  </div>
 
-        <div className="border rounded-lg p-4 text-sm text-gray-700">
-          ⚠️ This SKU is impacting active deals. Consider priority allocation or emergency replenishment.
-        </div>
-      </>
+  {/* Age Distribution */}
+  <div className="mb-6">
+    <h3 className="font-semibold mb-3">Age Distribution</h3>
+
+    <ProgressRow label="Fresh (0–60 days)" value={70} color="bg-green-500" />
+    <ProgressRow label="Aging (60–120 days)" value={30} color="bg-orange-400" />
+    <ProgressRow label="Expired / Near Expiry" value={0} color="bg-red-400" />
+  </div>
+
+  {/* Supply Chain */}
+  <div className="mb-6 border rounded-lg p-4 text-sm">
+    <h3 className="font-semibold mb-3">Supply Chain</h3>
+
+    <div className="flex justify-between mb-2">
+      <span className="text-gray-500">Supplier</span>
+      <span className="font-medium">{sku.supplier}</span>
+    </div>
+
+    <div className="flex justify-between mb-2">
+      <span className="text-gray-500">Last Replenishment</span>
+      <span>{sku.lastReplenishment} days ago</span>
+    </div>
+
+    <div className="flex justify-between items-center">
+      <span className="text-gray-500">Status</span>
+      <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">
+        overdue
+      </span>
+    </div>
+  </div>
+
+  {/* Active Alerts */}
+  <div className="mb-6">
+    <h3 className="font-semibold mb-3">Active Alerts</h3>
+
+    <div className="space-y-2">
+      <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded">
+        🚨 Urgent: Only {sku.days} days of stock remaining
+      </div>
+
+      <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded">
+        📞 Sales call: Customer needs testers urgently
+      </div>
+    </div>
+  </div>
+
+  {/* StratSync Recommendation */}
+  <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded">
+    <h3 className="font-semibold text-blue-700 mb-1">
+      StratSync Recommendation
+    </h3>
+    <p className="text-sm text-blue-700">
+      Reserve inventory for high-value deals, pause new commitments.
+    </p>
+  </div>
+
+  {/* Actions */}
+  <div className="flex gap-3">
+    <button className="flex-1 bg-blue-600 text-white py-2 rounded">
+      Create Offer
+    </button>
+    <button className="flex-1 border py-2 rounded">
+      Replenish
+    </button>
+  </div>
+</>
+
     )}
   </div>
 );
