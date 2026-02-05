@@ -1,5 +1,15 @@
 import { useState } from "react";
 
+type OfferItem = {
+  itemId?: string | number;
+  sku?: string;
+  brand?: string;
+  details?: string;
+  ncuStock?: number | string;
+  ncuCow?: number | string;
+  eta?: string;
+};
+
 const Offer = () => {
   const [division, setDivision] = useState("");
   const [brands, setBrands] = useState([]);
@@ -8,7 +18,7 @@ const Offer = () => {
   const [cowOnly, setCowOnly] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [offers, setOffers] = useState([]);
+  const [offers, setOffers] = useState<OfferItem[]>([]);
 
   // 🔹 Division → API call
   const handleDivisionChange = async (e) => {
@@ -21,7 +31,7 @@ const Offer = () => {
         `/api/offers?division=${selectedDivision}`
       );
       const result = await response.json();
-      setOffers(result); // expecting array
+      setOffers(Array.isArray(result) ? result : result?.data ?? []);
     } catch (error) {
       console.error("Error fetching offers", error);
     } finally {
@@ -86,9 +96,9 @@ const Offer = () => {
                 </thead>
 
                 <tbody>
-                  {offers.map((item) => (
+                  {offers.map((item, index) => (
                     <tr
-                      key={item.itemId}
+                      key={item.itemId ?? item.sku ?? index}
                       className="border-b hover:bg-gray-50"
                     >
                       <td className="p-3">
