@@ -6,6 +6,8 @@ import { createRoot } from 'react-dom/client';
 
 import AppRouter from './router/Router';
 import { ClientProvider } from "./context/ClientContext";
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 
 
@@ -36,12 +38,13 @@ if (userCssUrl && typeof userCssUrl === 'string') {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ClientProvider value={{
+    <Provider store={store}>
+      <ClientProvider value={{
         name: "Tionale",
         industry: "Perfumes and Cosmetics Trading",
       }}>
-
-    <AppRouter />
-    </ClientProvider>
+        <AppRouter />
+      </ClientProvider>
+    </Provider>
   </StrictMode>
 );
