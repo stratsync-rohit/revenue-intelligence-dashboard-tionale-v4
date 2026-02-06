@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { setSelectedDivision } from '../store/divisionSlice';
 
 const CreateOffer = () => {
   const [description, setDescription] = useState("");
@@ -10,7 +8,6 @@ const CreateOffer = () => {
   // Loading state (optional)
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // Use sample data for now
@@ -73,7 +70,6 @@ const CreateOffer = () => {
                 onChange={(e) => {
                   const divisionId = e.target.value;
                   setSelectedDivision(divisionId);
-                  dispatch(setSelectedDivision({ id: divisionId, name: divisions.find(d => d.id == divisionId)?.name }));
                   if (divisionId) {
                     navigate(`/division/${divisionId}`);
                   }
@@ -90,13 +86,13 @@ const CreateOffer = () => {
             </div>
 
             {/* Footer Actions */}
-            {/* <div className="flex justify-end pt-4 border-t">
+            <div className="flex justify-end pt-4 border-t">
               <button
                 className="bg-gray-500 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
               >
                 Save Offer
               </button>
-            </div> */}
+            </div>
           </>
         )}
       </div>

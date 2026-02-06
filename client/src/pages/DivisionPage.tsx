@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import divisionsData from '../pages/divisionsData';
+import divisionsData from '../pages/DivisionsData';
 
 const DivisionPage = () => {
   const { divisionId } = useParams();
