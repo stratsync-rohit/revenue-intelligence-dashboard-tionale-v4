@@ -9,7 +9,7 @@ import Customers from "../pages/Customers";
 import Inventory from "../pages/Inventory";
 import Categories from "../pages/Categories";
 import NotFound from "../pages/NotFound";
-import Offer from "../pages/Offer";
+import Offer from "../pages/CreateOffer";
 
 
 
