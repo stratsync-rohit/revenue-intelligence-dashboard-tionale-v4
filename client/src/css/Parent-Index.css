@@ -221,12 +221,11 @@ html {
     background-color: rgb(var(--color-bg-hover));
   }
 
-  /* CARD (unified for stats/metrics) */
-  /* StatCard.tsx and DealCard.tsx use this class */
+
   .card {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* content starts at top */
+    justify-content: flex-start; 
     position: relative;
     background-color: rgb(var(--color-bg-primary));
     border-radius: var(--radius-xl);

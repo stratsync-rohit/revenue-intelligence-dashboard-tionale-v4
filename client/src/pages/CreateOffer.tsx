@@ -10,18 +10,25 @@ const CreateOffer = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Use sample data for now
+  
     const sampleDivisions = [
       { id: 1, name: "Electronics" },
       { id: 2, name: "Fashion" },
       { id: 3, name: "Grocery" },
+      { id: 4, name: "Home & Living" },
+      { id: 5, name: "Automotive" },
+      { id: 6, name: "Sports & Fitness" },
+      { id: 7, name: "Books" },
+      { id: 8, name: "Health & Beauty" },
+      { id: 9, name: "Toys & Games" },
+      { id: 10, name: "Stationery" },
     ];
-    const sampleDescription = "This is a sample offer description fetched from backend.";
+    const sampleDescription = "This is a sample offer  fetched from backend.";
     setTimeout(() => {
       setDivisions(sampleDivisions);
       setDescription(sampleDescription);
       setLoading(false);
-    }, 700); // Simulate network delay
+    }, 700); 
   }, []);
 
   return (
@@ -86,13 +93,13 @@ const CreateOffer = () => {
             </div>
 
             {/* Footer Actions */}
-            <div className="flex justify-end pt-4 border-t">
+            {/* <div className="flex justify-end pt-4 border-t">
               <button
                 className="bg-gray-500 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
               >
                 Save Offer
               </button>
-            </div>
+            </div> */}
           </>
         )}
       </div>
