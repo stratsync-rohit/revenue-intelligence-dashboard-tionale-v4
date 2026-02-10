@@ -134,7 +134,7 @@ const divisionData = [
   }
 ];
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
@@ -160,7 +160,7 @@ const DivisionPage = () => {
   const division = useSelector((state: any) => state.division.selectedDivision);
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [showOffer, setShowOffer] = useState(false);
+  const navigate = useNavigate();
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [offerName, setOfferName] = useState("");
@@ -475,7 +475,19 @@ const DivisionPage = () => {
       <div className="flex justify-end">
         <button
           disabled={selectedItems.length === 0}
-          onClick={() => setShowOffer(true)}
+          onClick={() => {
+            if (selectedItems.length > 0) {
+              // Pass selectedItems via state
+              navigate(`/division/${divisionId}/offer`, {
+                state: {
+                  selectedItems,
+                  tableData,
+                  divisionName,
+                  divisionId
+                }
+              });
+            }
+          }}
           className={`px-6 py-2 rounded-lg text-white font-semibold ${
             selectedItems.length === 0
               ? "bg-gray-300"
@@ -487,59 +499,7 @@ const DivisionPage = () => {
       </div>
 
       {/* ================= OFFER PACKET ================= */}
-      {showOffer && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-[80%] rounded-xl p-6">
-            <h2 className="text-3xl font-semibold text-center text-indigo-600 mb-6">
-              Offer Packet
-            </h2>
-
-            <table className="w-full mb-8 border rounded-lg overflow-hidden">
-              <thead className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-                <tr>
-                  <th className="p-3 text-left">SKU</th>
-                  <th className="p-3">Units</th>
-                  <th className="p-3">Price</th>
-                  <th className="p-3">ETA</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData
-                  .filter((i) => selectedItems.includes(i.id))
-                  .map((item) => (
-                    <tr key={item.id} className="border-b">
-                      <td className="p-3">{item.sku}</td>
-                      <td className="p-3">{item.ncuStocks}</td>
-                      <td className="p-3">$12290.26</td>
-                      <td className="p-3">{item.etax || "N/A"}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-
-            <div className="flex justify-between">
-              <button
-                onClick={() => setShowSaveModal(true)}
-                className="bg-green-500 text-white px-6 py-2 rounded-lg"
-              >
-                Save
-              </button>
-              <button className="bg-blue-500 text-white px-6 py-2 rounded-lg">
-                Export
-              </button>
-              <button className="bg-yellow-400 px-6 py-2 rounded-lg">
-                Send Email
-              </button>
-              <button
-                onClick={() => setShowCancelModal(true)}
-                className="bg-red-500 text-white px-6 py-2 rounded-lg"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Offer Packet now opens in a new page */}
 
       {/* SAVE MODAL */}
       {showSaveModal && (

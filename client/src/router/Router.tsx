@@ -10,7 +10,9 @@ import Inventory from "../pages/Inventory";
 import Categories from "../pages/Categories";
 import NotFound from "../pages/NotFound";
 import Offer from "../pages/CreateOffer";
+
 import DivisionPage from "../pages/DivisionPage";
+import OfferPacketPage from "../pages/OfferPacketPage";
 
 
 
@@ -28,6 +30,7 @@ const AppRouter = () => {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/division/:divisionId" element={<DivisionPage />} />
+              <Route path="/division/:divisionId/offer" element={<OfferPacketPage />} />
         </Route>
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
