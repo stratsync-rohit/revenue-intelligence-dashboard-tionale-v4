@@ -1,20 +1,22 @@
 import { useLocation, useNavigate } from "react-router-dom";
-
-
 import { useState } from "react";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const OfferPacketPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedItems = [], tableData = [], divisionName = "-", divisionId = "" } = location.state || {};
+  const {
+    selectedItems = [],
+    tableData = [],
+    divisionName = "-",
+    divisionId = "",
+  } = location.state || {};
 
-  // If no data, redirect back
   if (!selectedItems.length || !tableData.length) {
     navigate(`/division/${divisionId}`);
     return null;
   }
 
-  // Editable state for units and price
   const initialRows = tableData
     .filter((i: any) => selectedItems.includes(i.id))
     .map((item: any) => ({
@@ -22,73 +24,151 @@ const OfferPacketPage = () => {
       sku: item.sku,
       units: item.ncuStocks,
       price: 12290.26,
-      eta: item.etax || "N/A"
+      eta: item.etax || "N/A",
     }));
-  const [rows, setRows] = useState(initialRows);
 
-  const handleChange = (id: string, field: "units" | "price", value: string) => {
+  const [rows, setRows] = useState(initialRows);
+  const [editIdx, setEditIdx] = useState<number | null>(null);
+
+  const handleChange = (
+    id: string,
+    field: "units" | "price",
+    value: string
+  ) => {
     setRows((prev) =>
       prev.map((row) =>
-        row.id === id
-          ? { ...row, [field]: field === "units" ? Number(value) : Number(value) }
-          : row
+        row.id === id ? { ...row, [field]: Number(value) } : row
       )
     );
   };
 
+  const handleEdit = (idx: number) => {
+    setEditIdx(idx);
+  };
+
+  const handleDelete = (idx: number) => {
+    setRows((prev) => prev.filter((_, i) => i !== idx));
+    if (editIdx === idx) setEditIdx(null);
+  };
+
   return (
-    <div className="p-8 min-h-screen bg-gray-50 flex flex-col items-center">
-      <div className="bg-white w-full max-w-4xl rounded-xl p-8 shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-indigo-600 mb-6">
-          Offer Packet
-        </h2>
-        <p className="text-center text-gray-500 mb-4">Division: {divisionName}</p>
-        <table className="w-full mb-8 border rounded-lg overflow-hidden">
-          <thead className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-            <tr>
-              <th className="p-3 text-left">SKU</th>
-              <th className="p-3">Units</th>
-              <th className="p-3">Price</th>
-              <th className="p-3">ETA</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.id} className="border-b">
-                <td className="p-3">{row.sku}</td>
-                <td className="p-3">
-                  <input
-                    type="number"
-                    min={0}
-                    value={row.units}
-                    onChange={e => handleChange(row.id, "units", e.target.value)}
-                    className="border rounded px-2 py-1 w-24"
-                  />
-                </td>
-                <td className="p-3">
-                  <input
-                    type="number"
-                    min={0}
-                    value={row.price}
-                    onChange={e => handleChange(row.id, "price", e.target.value)}
-                    className="border rounded px-2 py-1 w-28"
-                  />
-                </td>
-                <td className="p-3">{row.eta}</td>
+    <div className="min-h-screen bg-slate-100 flex justify-center py-10 px-4">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-slate-200">
+
+        {/* Header */}
+        <div className="px-8 py-6 border-b">
+          <h1 className="text-2xl font-semibold text-slate-800">
+            Offer Packet
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Division: <span className="font-medium">{divisionName}</span>
+          </p>
+        </div>
+
+        {/* Table */}
+        <div className="px-8 py-6 overflow-x-auto">
+          <table className="w-full border border-slate-200 rounded-xl overflow-hidden">
+            <thead className="bg-slate-50 text-slate-600 text-sm">
+              <tr>
+                <th className="px-4 py-3 text-left">SKU</th>
+                <th className="px-4 py-3 text-center">Units</th>
+                <th className="px-4 py-3 text-center">Price</th>
+                <th className="px-4 py-3 text-center">ETA</th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-between">
-          <button className="bg-green-500 text-white px-6 py-2 rounded-lg">Save</button>
-          <button className="bg-blue-500 text-white px-6 py-2 rounded-lg">Export</button>
-          <button className="bg-yellow-400 px-6 py-2 rounded-lg">Send Email</button>
+            </thead>
+            <tbody className="text-sm">
+              {rows.map((row, idx) => (
+                <tr
+                  key={row.id}
+                  className={`border-t ${
+                    idx % 2 === 0 ? "bg-white" : "bg-slate-50"
+                  } hover:bg-indigo-50 transition`}
+                >
+                  <td className="px-4 py-3 font-medium text-slate-700">
+                    {row.sku}
+                  </td>
+
+                  <td className="px-4 py-3 text-center">
+                    {editIdx === idx ? (
+                      <input
+                        type="number"
+                        min={0}
+                        value={row.units}
+                        onChange={(e) =>
+                          handleChange(row.id, "units", e.target.value)
+                        }
+                        className="w-24 rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{row.units}</span>
+                    )}
+                  </td>
+
+                  <td className="px-4 py-3 text-center">
+                    {editIdx === idx ? (
+                      <input
+                        type="number"
+                        min={0}
+                        value={row.price}
+                        onChange={(e) =>
+                          handleChange(row.id, "price", e.target.value)
+                        }
+                        className="w-32 rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{row.price}</span>
+                    )}
+                  </td>
+
+                  <td className="px-4 py-3 text-center text-slate-600">
+                    {row.eta}
+                  </td>
+
+                  <td className="px-4 py-3 text-center flex items-center gap-2 justify-center">
+                    <button
+                      className="text-gray-600 hover:text-gray-800 p-2"
+                      onClick={() => handleEdit(idx)}
+                      title="Edit"
+                    >
+                      <FaPencilAlt />
+                    </button>
+                    <button
+                      className="text-red-600 hover:text-red-800 p-2"
+                      onClick={() => handleDelete(idx)}
+                      title="Delete"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="px-8 py-5 border-t bg-slate-50 flex justify-between items-center">
           <button
             onClick={() => navigate(-1)}
-            className="bg-red-500 text-white px-6 py-2 rounded-lg"
+            className="text-slate-600 hover:text-slate-800 text-sm font-medium"
           >
             Cancel
           </button>
+
+          <div className="flex gap-3">
+            <button className="px-5 py-2 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 transition">
+              Export
+            </button>
+
+            <button className="px-5 py-2 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition">
+              Send Email
+            </button>
+
+            <button className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition shadow">
+              Save Offer
+            </button>
+          </div>
         </div>
       </div>
     </div>
