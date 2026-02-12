@@ -1,3 +1,4 @@
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CancelPopup from "../components/common/CancelPopup";
@@ -18,48 +19,23 @@ const OfferPacketPage = () => {
     return null;
   }
 
-  type Row = {
-    id: string;
-    sku: string;
-    units: number;
-    price: number;
-    eta: string;
-  };
 
-  const initialRows: Row[] = tableData
-    .filter((i: any) => selectedItems.includes(i.id))
-    .map((item: any) => ({
-      id: item.id,
-      sku: item.sku,
-      units: item.ncuStocks,
-      price: 12290.26,
-      eta: item.etax || "N/A",
-    }));
-
-  const [rows, setRows] = useState<Row[]>(initialRows);
-  const [editIdx, setEditIdx] = useState<number | null>(null);
+  // Table state for editing offer price
+  const [editId, setEditId] = useState<string | null>(null);
+  const [rows, setRows] = useState<any[]>(
+    tableData.filter((i: any) => selectedItems.includes(i.id))
+  );
   const [showCancelPopup, setShowCancelPopup] = useState(false);
 
-  const handleChange = (
-    id: string,
-    field: "units" | "price",
-    value: string
-  ) => {
-    setRows((prev: Row[]) =>
-      prev.map((row: Row) =>
-        row.id === id ? { ...row, [field]: Number(value) } : row
+  const handlePriceChange = (id: string, value: string) => {
+    setRows(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, offerPrice: Number(value) } : item
       )
     );
   };
 
-  const handleEdit = (idx: number) => {
-    setEditIdx(idx);
-  };
-
-  const handleDelete = (idx: number) => {
-    setRows((prev: Row[]) => prev.filter((_: Row, i: number) => i !== idx));
-    if (editIdx === idx) setEditIdx(null);
-  };
+  // ...existing code...
 
   
   const handleSaveDraft = () => {
@@ -91,7 +67,7 @@ const OfferPacketPage = () => {
   return (
     <>
       <div className="min-h-screen bg-slate-100 flex justify-center py-10 px-4">
-        <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-slate-200">
+        <div className="w-full bg-white rounded-2xl shadow-xl border border-slate-200">
 
     
         <div className="px-8 py-6 border-b">
@@ -104,77 +80,95 @@ const OfferPacketPage = () => {
         </div>
 
         
-        <div className="px-8 py-6 overflow-x-auto">
-          <table className="w-full border border-slate-200 rounded-xl overflow-hidden">
-            <thead className="bg-slate-50 text-slate-600 text-sm">
-              <tr>
-                <th className="px-4 py-3 text-left">SKU</th>
-                <th className="px-4 py-3 text-center">Units</th>
-                <th className="px-4 py-3 text-center">Price</th>
-                <th className="px-4 py-3 text-center">ETA</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+        <div className="px-2 sm:px-4 md:px-8 py-6 overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead className="sticky top-0 z-20">
+              <tr className="bg-gray-200 text-xs uppercase text-gray-600">
+                <th colSpan={14} className="p-2 text-center">Item Details</th>
+                <th className="p-2 text-center">Offer Price</th>
+                <th colSpan={2} className="p-2 text-center">Stocks</th>
+                <th colSpan={2} className="p-2 text-center">2 Weeks</th>
+                <th colSpan={2} className="p-2 text-center">4 Weeks</th>
+              </tr>
+              <tr className="bg-gray-100 text-left sticky top-[32px]">
+                {[
+                  "Item Ref",
+                  "UPC",
+                  "Brand",
+                  "Sub Brand",
+                  "Description",
+                  "Brand Classification",
+                  "Remarks",
+                  "Pack Size",
+                  "MIN (USD)",
+                  "FLOOR (USD)",
+                  "LSP",
+                  "LSP DATE",
+                  "PSO_FOR_CUSTOMER",
+                  "Offer Price",
+                  "OFFER QTY CLEAN",
+                  "OFFER QTY PROCESSED",
+                  "OFFER QTY CLEAN",
+                  "OFFER QTY PROCESSED",
+                  "OFFER QTY CLEAN",
+                  "OFFER QTY PROCESSED",
+                  "4W OFFER QTY PROCESSED",
+                  "Actions"
+                ].map(h => (
+                  <th key={h} className={h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base"}>{h}</th>
+                ))}
               </tr>
             </thead>
-            <tbody className="text-sm">
-              {rows.map((row: Row, idx: number) => (
-                <tr
-                  key={row.id}
-                  className={`border-t ${
-                    idx % 2 === 0 ? "bg-white" : "bg-slate-50"
-                  } hover:bg-indigo-50 transition`}
-                >
-                  <td className="px-4 py-3 font-medium text-slate-700">
-                    {row.sku}
-                  </td>
-
-                  <td className="px-4 py-3 text-center">
-                    {editIdx === idx ? (
+            <tbody>
+              {rows.map(item => (
+                <tr key={item.id} className="hover:bg-indigo-50">
+                  <td className="px-6 py-3 border">{item.itemRef}</td>
+                  <td className="px-6 py-3 border">{item.upc}</td>
+                  <td className="px-6 py-3 border">{item.brand}</td>
+                  <td className="px-6 py-3 border">{item.subBrand}</td>
+                  <td className="px-6 py-3 border">{item.description}</td>
+                  <td className="px-6 py-3 border">{item.brandClassification || "N/A"}</td>
+                  <td className="px-6 py-3 border">{item.remarks}</td>
+                  <td className="px-6 py-3 border">{item.packSize}</td>
+                  <td className="px-6 py-3 border">{item.minUsd}</td>
+                  <td className="px-6 py-3 border">{item.floorUsd}</td>
+                  <td className="px-6 py-3 border">{item.lsp}</td>
+                  <td className="px-6 py-3 border">{item.lspDate}</td>
+                  <td className="px-6 py-3 border">{item.psoForCustomer}</td>
+                  <td className="px-12 py-3 border text-base">
+                    {editId === item.id ? (
                       <input
                         type="number"
                         min={0}
-                        value={row.units}
-                        onChange={(e) =>
-                          handleChange(row.id, "units", e.target.value)
-                        }
-                        className="w-24 rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      />
-                    ) : (
-                      <span>{row.units}</span>
-                    )}
-                  </td>
-
-                  <td className="px-4 py-3 text-center">
-                    {editIdx === idx ? (
-                      <input
-                        type="number"
-                        min={0}
-                        value={row.price}
-                        onChange={(e) =>
-                          handleChange(row.id, "price", e.target.value)
-                        }
+                        value={item.offerPrice}
+                        onChange={e => handlePriceChange(item.id, e.target.value)}
                         className="w-32 rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        onBlur={() => setEditId(null)}
+                        autoFocus
                       />
                     ) : (
-                      <span>{row.price}</span>
+                      <span>{item.offerPrice}</span>
                     )}
                   </td>
-
-                  <td className="px-4 py-3 text-center text-slate-600">
-                    {row.eta}
-                  </td>
-
-                  <td className="px-4 py-3 text-center flex items-center gap-2 justify-center">
+                  <td className="px-6 py-3 border">{item.stockClean}</td>
+                  <td className="px-6 py-3 border">{item.stockProcess}</td>
+                  <td className="px-6 py-3 border">{item.week2Clean}</td>
+                  <td className="px-6 py-3 border">{item.week2Process}</td>
+                  <td className="px-6 py-3 border">{item.week4Clean}</td>
+                  <td className="px-6 py-3 border">{item.week4Process}</td>
+                  <td className="px-12 py-3 border text-base">{item.offerQtyProcessed4W}</td>
+                  <td className="px-6 py-3 border text-center">
                     <button
-                      className="text-gray-600 hover:text-gray-800 p-2"
-                      onClick={() => handleEdit(idx)}
-                      title="Edit"
+                      className="text-gray-600 hover:text-indigo-600 p-2"
+                      onClick={() => setEditId(item.id)}
+                      title="Edit Price"
                     >
                       <FaPencilAlt />
                     </button>
                     <button
                       className="text-red-600 hover:text-red-800 p-2"
-                      onClick={() => handleDelete(idx)}
-                      title="Delete"
+                      onClick={() => setRows(rows.filter(r => r.id !== item.id))}
+                      title="Delete Row"
                     >
                       <FaTrash />
                     </button>

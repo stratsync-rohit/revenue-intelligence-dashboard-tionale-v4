@@ -1,3 +1,4 @@
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import Select from "react-select";
@@ -6,114 +7,272 @@ import Select from "react-select";
 type OptionType = { value: string; label: string };
 
 type DivisionItem = {
+    brandClassification?: string;
+    remarks?: string;
+    lspDate?: string;
+    psoForCustomer?: string;
   id: string;
-  sku: string;
   brand: string;
   subBrand: string;
-  details: string;
-  ncuStocks: number;
-  ncuCows: number;
   eta: string | null;
+  ncuCows: number;
+  cow: boolean;
+
+  itemRef: string;
+  upc: string;
+  description: string;
+  packSize: string;
+
+  minUsd: number;
+  floorUsd: number;
+  lsp: number;
+  spData: number;
+  soForCustomer: number;
+
+  offerPrice: number;
+
+  stockClean: number;
+  stockProcess: number;
+
+  week2Clean: number;
+  week2Process: number;
+
+  week4Clean: number;
+  week4Process: number;
 };
 
-/* ================= COLUMNS ================= */
-const divisionColumns = [
-  { key: "select", label: "Select" },
-  { key: "id", label: "Item ID" },
-  { key: "sku", label: "SKU" },
-  { key: "brand", label: "Brand" },
-  { key: "details", label: "Details" },
-  { key: "ncuStocks", label: "NCU Stocks" },
-  { key: "ncuCows", label: "NCU Cows" },
-  { key: "eta", label: "ETA" }
-];
-
+/* ================= SAMPLE DATA (14 ITEMS) ================= */
 const divisionData: DivisionItem[] = [
   {
-    id: "596865",
-    sku: "SKU-ZHD3L8",
+    id: "1",
+    brand: "BURBERRY",
+    subBrand: "Her EDP",
+    eta: "18/01/2026",
+    ncuCows: 902,
+    cow: false,
+    itemRef: "3616305181069",
+    upc: "3616305181069",
+    description: "Burberry Her EDP Spray 100ML",
+    brandClassification: "Luxury",
+    remarks: "Best Seller",
+    packSize: "100ML",
+    minUsd: 64.75,
+    floorUsd: 63.5,
+    lsp: 72,
+    lspDate: "2026-02-01",
+    psoForCustomer: "PSO001",
+    spData: 69,
+    soForCustomer: 65.35,
+    offerPrice: 65.35,
+    stockClean: 269,
+    stockProcess: 120,
+    week2Clean: 150,
+    week2Process: 80,
+    week4Clean: 200,
+    week4Process: 140,
+    offerQtyProcessed4W: 120
+  },
+  {
+    id: "2",
+    brand: "DIOR",
+    subBrand: "Sauvage",
+    eta: "20/01/2026",
+    ncuCows: 1450,
+    cow: false,
+    itemRef: "3348901520197",
+    upc: "3348901520197",
+    description: "Dior Sauvage EDT 100ML",
+    brandClassification: "Premium",
+    remarks: "Trending",
+    packSize: "100ML",
+    minUsd: 75,
+    floorUsd: 72,
+    lsp: 85,
+    lspDate: "2026-01-20",
+    psoForCustomer: "PSO002",
+    spData: 82,
+    soForCustomer: 78,
+    offerPrice: 78,
+    stockClean: 310,
+    stockProcess: 90,
+    week2Clean: 200,
+    week2Process: 110,
+    week4Clean: 250,
+    week4Process: 150,
+    offerQtyProcessed4W: 130
+  },
+  {
+    id: "3",
     brand: "GUCCI",
     subBrand: "Gucci Bloom",
-    details: "Sophisticated woody composition",
-    ncuStocks: 879,
-    ncuCows: 902,
-    eta: "18/01/2026" // Next 7 Days
+    eta: "05/02/2026",
+    ncuCows: 800,
+    cow: true,
+    itemRef: "8005610328942",
+    upc: "8005610328942",
+    description: "Gucci Bloom EDP 100ML",
+    brandClassification: "Standard",
+    remarks: "Popular",
+    packSize: "100ML",
+    minUsd: 68,
+    floorUsd: 65,
+    lsp: 79,
+    lspDate: "2026-02-05",
+    psoForCustomer: "PSO003",
+    spData: 75,
+    soForCustomer: 70,
+    offerPrice: 70,
+    stockClean: 220,
+    stockProcess: 70,
+    week2Clean: 180,
+    week2Process: 90,
+    week4Clean: 210,
+    week4Process: 120,
+    offerQtyProcessed4W: 110
   },
   {
-    id: "605839",
-    sku: "SKU-CJ2W6N",
-    brand: "GUCCI",
-    subBrand: "Gucci Guilty",
-    details: "Subtle spicy blend",
-    ncuStocks: 505,
-    ncuCows: 0,
-    eta: "20/01/2026" // Next 7 Days
+    id: "4",
+    brand: "PRADA",
+    subBrand: "Luna Rossa",
+    eta: "28/02/2026",
+    ncuCows: 450,
+    // customer removed
+    cow: false,
+    itemRef: "8435137700023",
+    upc: "8435137700023",
+    description: "Prada Luna Rossa 100ML",
+    packSize: "100ML",
+    minUsd: 62,
+    floorUsd: 60,
+    lsp: 70,
+    spData: 67,
+    soForCustomer: 63,
+    offerPrice: 63,
+    stockClean: 180,
+    stockProcess: 50,
+    week2Clean: 130,
+    week2Process: 60,
+    week4Clean: 160,
+    week4Process: 80,
+    offerQtyProcessed4W: 70
   },
   {
-    id: "353324",
-    sku: "SKU-MOYY15",
-    brand: "BURBERRY",
-    subBrand: "Burberry Brit",
-    details: "Subtle aquatic composition",
-    ncuStocks: 367,
-    ncuCows: 1061,
-    eta: "05/02/2026" // Next 30 Days
+    id: "5",
+    brand: "ARMANI",
+    subBrand: "Acqua di Gio",
+    eta: "02/02/2026",
+    ncuCows: 1320,
+    customer: "Customer A",
+    cow: true,
+    itemRef: "3614273956762",
+    upc: "3614273956762",
+    description: "Acqua di Gio EDT 100ML",
+    packSize: "100ML",
+    minUsd: 70,
+    floorUsd: 67,
+    lsp: 82,
+    spData: 79,
+    soForCustomer: 73,
+    offerPrice: 73,
+    stockClean: 290,
+    stockProcess: 95,
+    week2Clean: 210,
+    week2Process: 105,
+    week4Clean: 240,
+    week4Process: 130,
+    offerQtyProcessed4W: 100
   },
   {
-    id: "313794",
-    sku: "SKU-HCBC30",
-    brand: "CHANNEL",
-    subBrand: "Chanel No. 5",
-    details: "Vibrant citrus blend limited edition",
-    ncuStocks: 493,
-    ncuCows: 2359,
-    eta: "10/02/2026" // Next 30 Days
+    id: "6",
+    brand: "VERSACE",
+    subBrand: "Eros",
+    eta: "22/01/2026",
+    ncuCows: 980,
+    customer: "Customer B",
+    cow: false,
+    itemRef: "8011003809219",
+    upc: "8011003809219",
+    description: "Versace Eros EDT 100ML",
+    packSize: "100ML",
+    minUsd: 66,
+    floorUsd: 63,
+    lsp: 76,
+    spData: 73,
+    soForCustomer: 68,
+    offerPrice: 68,
+    stockClean: 260,
+    stockProcess: 85,
+    week2Clean: 170,
+    week2Process: 90,
+    week4Clean: 210,
+    week4Process: 120,
+    offerQtyProcessed4W: 90
   },
   {
-    id: "245263",
-    sku: "SKU-RVH4R5",
-    brand: "HUGO BOSS",
-    subBrand: "Boss Bottled",
-    details: "Elegant oriental fragrance long-lasting",
-    ncuStocks: 84,
-    ncuCows: 129,
-    eta: "28/02/2026" // Next 60 Days
+    id: "7",
+    brand: "TOM FORD",
+    subBrand: "Black Orchid",
+    eta: "12/02/2026",
+    ncuCows: 610,
+    customer: "Customer C",
+    cow: true,
+    itemRef: "888066000582",
+    upc: "888066000582",
+    description: "Tom Ford Black Orchid 100ML",
+    packSize: "100ML",
+    minUsd: 88,
+    floorUsd: 85,
+    lsp: 98,
+    spData: 95,
+    soForCustomer: 90,
+    offerPrice: 90,
+    stockClean: 150,
+    stockProcess: 60,
+    week2Clean: 120,
+    week2Process: 70,
+    week4Clean: 140,
+    week4Process: 85,
+    offerQtyProcessed4W: 60
   },
-
-  { id: "782341", sku: "SKU-PLX9T2", brand: "DIOR", subBrand: "Sauvage", details: "Fresh aromatic masculine fragrance", ncuStocks: 720, ncuCows: 1450, eta: "16/01/2026" }, // 7 Days
-  { id: "918274", sku: "SKU-QWE8K1", brand: "YVES SAINT LAURENT", subBrand: "Y Eau de Parfum", details: "Intense woody fougere fragrance", ncuStocks: 640, ncuCows: 890, eta: null },
-  { id: "462918", sku: "SKU-XMZ3P9", brand: "ARMANI", subBrand: "Acqua di Gio", details: "Fresh marine citrus scent", ncuStocks: 520, ncuCows: 1320, eta: "02/02/2026" }, // 30 Days
-  { id: "574839", sku: "SKU-LKJ7N4", brand: "PRADA", subBrand: "Luna Rossa", details: "Clean and energetic fragrance", ncuStocks: 310, ncuCows: 450, eta: "25/02/2026" }, // 60 Days
-  { id: "689120", sku: "SKU-TYU6V8", brand: "VERSACE", subBrand: "Eros", details: "Sweet vanilla mint fragrance", ncuStocks: 415, ncuCows: 980, eta: "22/01/2026" }, // 7 Days
-  { id: "834729", sku: "SKU-UIO4M6", brand: "TOM FORD", subBrand: "Black Orchid", details: "Rich dark floral fragrance", ncuStocks: 290, ncuCows: 610, eta: "12/02/2026" }, // 30 Days
-  { id: "219384", sku: "SKU-ASD2F7", brand: "CALVIN KLEIN", subBrand: "CK One", details: "Light fresh unisex fragrance", ncuStocks: 860, ncuCows: 1200, eta: null },
-  { id: "748291", sku: "SKU-ZXC8V1", brand: "DOLCE & GABBANA", subBrand: "Light Blue", details: "Crisp fruity summer scent", ncuStocks: 430, ncuCows: 760, eta: "18/02/2026" }, // 60 Days
-  { id: "563920", sku: "SKU-HJK3L2", brand: "MONT BLANC", subBrand: "Legend", details: "Woody aromatic masculine scent", ncuStocks: 375, ncuCows: 540, eta: "19/01/2026" }, // 7 Days
-  { id: "192837", sku: "SKU-ERT9P4", brand: "BVLGARI", subBrand: "Man in Black", details: "Spicy oriental bold fragrance", ncuStocks: 260, ncuCows: 410, eta: "05/03/2026" }, // 60 Days
-  { id: "847362", sku: "SKU-YUI7K5", brand: "LANCOME", subBrand: "La Vie Est Belle", details: "Sweet floral gourmand fragrance", ncuStocks: 540, ncuCows: 890, eta: "03/02/2026" }, // 30 Days
-  { id: "384756", sku: "SKU-GHF6D3", brand: "PACO RABANNE", subBrand: "1 Million", details: "Warm spicy leather fragrance", ncuStocks: 610, ncuCows: 1020, eta: null },
-  { id: "657483", sku: "SKU-BNM5Q2", brand: "ISSEY MIYAKE", subBrand: "L'Eau d'Issey", details: "Fresh aquatic floral scent", ncuStocks: 295, ncuCows: 470, eta: "01/03/2026" }, // 60 Days
-  { id: "918203", sku: "SKU-WER4T8", brand: "CAROLINA HERRERA", subBrand: "Good Girl", details: "Sweet warm sensual fragrance", ncuStocks: 480, ncuCows: 810, eta: "21/01/2026" }, // 7 Days
-  { id: "274839", sku: "SKU-MNB1X9", brand: "JEAN PAUL GAULTIER", subBrand: "Le Male", details: "Minty vanilla masculine scent", ncuStocks: 350, ncuCows: 620, eta: "15/02/2026" }, // 30 Days
-  { id: "556712", sku: "SKU-POI8L0", brand: "MAISON MARGIELA", subBrand: "Replica Jazz Club", details: "Warm rum tobacco fragrance", ncuStocks: 210, ncuCows: 330, eta: null }
+  {
+    id: "8",
+    brand: "CALVIN KLEIN",
+    subBrand: "CK One",
+    eta: null,
+    ncuCows: 1200,
+    customer: "Customer D",
+    cow: false,
+    itemRef: "3607343811798",
+    upc: "3607343811798",
+    description: "CK One EDT 100ML",
+    packSize: "100ML",
+    minUsd: 40,
+    floorUsd: 38,
+    lsp: 50,
+    spData: 47,
+    soForCustomer: 42,
+    offerPrice: 42,
+    stockClean: 350,
+    stockProcess: 100,
+    week2Clean: 280,
+    week2Process: 130,
+    week4Clean: 300,
+    week4Process: 160,
+    offerQtyProcessed4W: 140
+  }
 ];
 
-
+/* ================= HELPER ================= */
 const getTimelineFromEta = (eta: string | null) => {
   if (!eta) return null;
-
   const today = new Date();
-  const [day, month, year] = eta.split("/").map(Number);
-  const etaDate = new Date(year, month - 1, day);
-
-  const diffDays = Math.ceil(
-    (etaDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  if (diffDays <= 7) return "Next 7 Days";
-  if (diffDays <= 30) return "Next 30 Days";
-  if (diffDays <= 60) return "Next 60 Days";
-
+  const [d, m, y] = eta.split("/").map(Number);
+  const etaDate = new Date(y, m - 1, d);
+  const diff =
+    (etaDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+  if (diff <= 7) return "Next 7 Days";
+  if (diff <= 30) return "Next 30 Days";
+  if (diff <= 60) return "Next 60 Days";
   return "Beyond 60 Days";
 };
 
@@ -124,56 +283,57 @@ const DivisionPage = () => {
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [cowOnly, setCowOnly] = useState(true);
-  const [etaFilter, setEtaFilter] = useState("All");
-  const [showFilters, setShowFilters] = useState(false);
+  const [items, setItems] = useState<DivisionItem[]>(divisionData);
 
+  const [selectedCustomers, setSelectedCustomers] = useState<OptionType[]>([]);
   const [selectedShipping, setSelectedShipping] = useState<OptionType[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
   const [selectedSubBrands, setSelectedSubBrands] = useState<OptionType[]>([]);
-  const [selectedCustomers, setSelectedCustomers] = useState<OptionType[]>([]);
-  // Dummy customer options
-  const customerOptions: OptionType[] = [
-    { value: "customer1", label: "Customer 1" },
-    { value: "customer2", label: "Customer 2" },
-    { value: "customer3", label: "Customer 3" },
-    { value: "customer4", label: "Customer 4" },
-  ];
 
-  /* ================= OPTIONS ================= */
+  /* ================= FILTER OPTIONS ================= */
   const shippingOptions: OptionType[] = [
     { value: "Next 7 Days", label: "Next 7 Days" },
     { value: "Next 30 Days", label: "Next 30 Days" },
     { value: "Next 60 Days", label: "Next 60 Days" }
   ];
 
-  const brandOptions: OptionType[] = useMemo(
+  const customerOptions: OptionType[] = [
+    { value: "customer1", label: "Customer 1" },
+    { value: "customer2", label: "Customer 2" },
+    { value: "customer3", label: "Customer 3" },
+    { value: "customer4", label: "Customer 4" }
+  ];
+
+  const brandOptions = useMemo(
     () =>
-      [...new Set(divisionData.map(d => d.brand))].map(b => ({
+      [...new Set(items.map(d => d.brand))].map(b => ({
         value: b,
         label: b
       })),
-    []
+    [items]
   );
 
-  const subBrandOptions: OptionType[] = useMemo(() => {
+  const subBrandOptions = useMemo(() => {
     if (!selectedBrands.length) return [];
     const brands = selectedBrands.map(b => b.value);
-
-    return [...new Set(
-      divisionData
-        .filter(d => brands.includes(d.brand))
-        .map(d => d.subBrand)
-    )].map(sb => ({ value: sb, label: sb }));
-  }, [selectedBrands]);
+    return [
+      ...new Set(
+        items
+          .filter(d => brands.includes(d.brand))
+          .map(d => d.subBrand)
+      )
+    ].map(sb => ({ value: sb, label: sb }));
+  }, [selectedBrands, items]);
 
   /* ================= FILTER LOGIC ================= */
   const tableData = useMemo(() => {
-    return divisionData.filter(item => {
+    return items.filter(item => {
       const timeline = getTimelineFromEta(item.eta);
 
-      if (cowOnly && item.ncuCows === 0) return false;
+      if (cowOnly && !item.cow) return false;
 
-      if (etaFilter !== "All" && timeline !== etaFilter) return false;
+      // Customer filter logic placeholder (no customer in item)
+      // If you want to filter by customer, add customer property to DivisionItem and update here
 
       if (
         selectedShipping.length &&
@@ -193,82 +353,57 @@ const DivisionPage = () => {
       )
         return false;
 
-      // Customer filter logic placeholder (no customer in item)
-      // If you want to filter by customer, add customer property to DivisionItem and update here
       return true;
     });
   }, [
+    items,
     cowOnly,
-    etaFilter,
+    selectedCustomers,
     selectedShipping,
     selectedBrands,
-    selectedSubBrands,
-    selectedCustomers
+    selectedSubBrands
   ]);
 
-  /* ================= UI ================= */
+  const [editId, setEditId] = useState<string | null>(null);
+  const handlePriceChange = (id: string, value: string) => {
+    setItems(prev =>
+      prev.map(item =>
+        item.id === id
+          ? { ...item, offerPrice: Number(value) }
+          : item
+      )
+    );
+  };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-6">
-      {/* HEADER */}
-      <div>
-        <h1 className="text-2xl font-semibold">Offer generation</h1>
-        <p className="text-sm text-gray-500">Division: Grocery</p>
-      </div>
+      <h1 className="text-2xl font-semibold">
+        Offer Generation – Grocery
+      </h1>
 
-      {/* TOP BAR */}
-      <div className="bg-white p-4 rounded-lg shadow flex items-center gap-6">
-        <label className="flex items-center gap-2 font-semibold">
-          <input
-            type="checkbox"
-            checked={cowOnly}
-            onChange={() => setCowOnly(!cowOnly)}
-            className="w-5 h-5"
-          />
-          COW
-        </label>
-
-        <div className="flex items-center gap-2">
-          <span className="font-semibold">ETA:</span>
-          <select
-            value={etaFilter}
-            onChange={e => setEtaFilter(e.target.value)}
-            className="border rounded-md px-3 py-2"
-          >
-            <option value="All">All</option>
-            <option value="Next 7 Days">Next 7 Days</option>
-            <option value="Next 30 Days">Next 30 Days</option>
-            <option value="Next 60 Days">Next 60 Days</option>
-          </select>
-        </div>
-
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="ml-auto px-4 py-2 border rounded-md font-semibold"
-        >
-          Filter
-        </button>
-      </div>
-
-      {/* ADVANCED FILTERS */}
-      {showFilters && (
-        <div className="bg-white p-4 rounded-lg shadow grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* FILTER BAR */}
+      <div className="bg-white p-4 rounded-xl shadow flex flex-wrap items-end gap-6 z-[100] relative">
+        <div className="min-w-[200px] relative z-[110]">
           <Select
-          
+            isMulti
             value={selectedCustomers}
             onChange={v => setSelectedCustomers(v as OptionType[])}
             options={customerOptions}
-            placeholder="Search Customer"
-            isSearchable={true}
+            placeholder="Customer"
           />
+        </div>
 
+        <div className="min-w-[200px] relative z-[110]">
           <Select
-            
+            isMulti
             value={selectedShipping}
             onChange={v => setSelectedShipping(v as OptionType[])}
             options={shippingOptions}
             placeholder="Shipping Timeline"
           />
+        </div>
 
+        <div className="min-w-[200px] relative z-[110]">
           <Select
             isMulti
             value={selectedBrands}
@@ -277,58 +412,113 @@ const DivisionPage = () => {
               setSelectedSubBrands([]);
             }}
             options={brandOptions}
-            placeholder="Search Brand"
-            isSearchable={true}
+            placeholder="Brand"
           />
+        </div>
 
+        <div className="min-w-[200px]">
           <Select
             isMulti
             value={selectedSubBrands}
             onChange={v => setSelectedSubBrands(v as OptionType[])}
             options={subBrandOptions}
             isDisabled={!selectedBrands.length}
-            placeholder="Search Sub-Brand"
-            isSearchable={true}
+            placeholder="Sub Brand"
           />
         </div>
-      )}
+
+        <div className="flex items-center gap-2 ml-auto relative z-[110]">
+          <input
+            type="checkbox"
+            checked={cowOnly}
+            onChange={() => setCowOnly(!cowOnly)}
+            className="w-5 h-5"
+          />
+          <span className="font-medium">COW Only</span>
+        </div>
+      </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              {divisionColumns.map(col => (
-                <th key={col.key} className="p-3 text-left font-semibold">
-                  {col.label}
+      <div className="bg-white rounded-xl shadow overflow-auto max-h-[600px]">
+        <table className="min-w-full text-sm border-collapse">
+          <thead className="sticky top-0 z-20">
+            <tr className="bg-gray-200 text-xs uppercase text-gray-600">
+              <th colSpan={14} className="p-2 text-center">Item Details</th>
+              <th className="p-2 text-center">Offer Price</th>
+              <th colSpan={2} className="p-2 text-center">Stocks</th>
+              <th colSpan={2} className="p-2 text-center">2 Weeks</th>
+              <th colSpan={2} className="p-2 text-center">4 Weeks</th>
+            </tr>
+
+            <tr className="bg-gray-100 text-left sticky top-[32px]">
+              {[
+                "Select",
+                "Item Ref",
+                "UPC",
+                "Brand",
+                "Sub Brand",
+                "Description",
+                "Brand Classification",
+                "Remarks",
+                "Pack Size",
+                "MIN (USD)",
+                "FLOOR (USD)",
+                "LSP",
+                "LSP DATE",
+                "PSO_FOR_CUSTOMER",
+                "Offer Price",
+                "OFFER QTY CLEAN",
+                "OFFER QTY PROCESSED",
+                "OFFER QTY CLEAN",
+                "OFFER QTY PROCESSED",
+                "OFFER QTY CLEAN",
+                "OFFER QTY PROCESSED"
+              ].map(h => (
+                <th key={h} className={h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base"}>
+                  {h}
                 </th>
               ))}
             </tr>
           </thead>
+
           <tbody>
             {tableData.map(item => (
-              <tr key={item.id} className="border-b hover:bg-indigo-50">
-                {divisionColumns.map(col =>
-                  col.key === "select" ? (
-                    <td key={col.key} className="p-3 text-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item.id)}
-                        onChange={() =>
-                          setSelectedItems(prev =>
-                            prev.includes(item.id)
-                              ? prev.filter(i => i !== item.id)
-                              : [...prev, item.id]
-                          )
-                        }
-                      />
-                    </td>
-                  ) : (
-                    <td key={col.key} className="p-3">
-                      {(item as any)[col.key] || "—"}
-                    </td>
-                  )
-                )}
+              <tr key={item.id} className="hover:bg-indigo-50">
+                <td className="px-6 py-3 border text-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() =>
+                      setSelectedItems(prev =>
+                        prev.includes(item.id)
+                          ? prev.filter(i => i !== item.id)
+                          : [...prev, item.id]
+                      )
+                    }
+                  />
+                </td>
+                <td className="px-6 py-3 border">{item.itemRef}</td>
+                <td className="px-6 py-3 border">{item.upc}</td>
+                <td className="px-6 py-3 border">{item.brand}</td>
+                <td className="px-6 py-3 border">{item.subBrand}</td>
+                <td className="px-6 py-3 border">{item.description}</td>
+                <td className="px-6 py-3 border">{item.brandClassification || "N/A"}</td>
+                <td className="px-6 py-3 border">{item.remarks}</td>
+                <td className="px-6 py-3 border">{item.packSize}</td>
+                <td className="px-6 py-3 border">{item.minUsd}</td>
+                <td className="px-6 py-3 border">{item.floorUsd}</td>
+                <td className="px-6 py-3 border">{item.lsp}</td>
+                <td className="px-6 py-3 border">{item.lspDate}</td>
+                <td className="px-6 py-3 border">{item.psoForCustomer}</td>
+                <td className="px-6 py-3 border">{item.stockClean}</td>
+                <td className="px-6 py-3 border">{item.stockProcess}</td>
+                <td className="px-6 py-3 border">{item.week2Clean}</td>
+                <td className="px-6 py-3 border">{item.week2Process}</td>
+                <td className="px-6 py-3 border">{item.week4Clean}</td>
+                <td className="px-6 py-3 border">{item.week4Process}</td>
+                <td className="px-12 py-3 border text-base">
+                  <span>{item.offerPrice}</span>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -346,7 +536,7 @@ const DivisionPage = () => {
           }
           className={`px-6 py-2 rounded-lg text-white ${
             selectedItems.length
-              ? "bg-indigo-500 hover:bg-indigo-600"
+              ? "bg-indigo-600 hover:bg-indigo-700"
               : "bg-gray-300"
           }`}
         >
