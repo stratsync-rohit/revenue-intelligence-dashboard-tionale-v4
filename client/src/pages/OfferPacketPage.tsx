@@ -74,9 +74,12 @@ const OfferPacketPage = () => {
           <h1 className="text-2xl font-semibold text-slate-800">
             Offer Packet
           </h1>
+           <div className="text-lg font-medium text-blue-700 mb-2">Step 3</div>
           <p className="text-sm text-slate-500 mt-1">
             Division: <span className="font-medium">{divisionName}</span>
           </p>
+         
+      
         </div>
 
         
@@ -84,7 +87,7 @@ const OfferPacketPage = () => {
           <table className="w-full text-sm border-collapse">
             <thead className="sticky top-0 z-20">
               <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-                <th colSpan={1} className="p-2 text-center">Item Details</th>
+                <th colSpan={1} className="p-2 text-center">NCUs listing</th>
                 <th className="p-2 text-center">Offer Price</th>
                 <th colSpan={3} className="p-2 text-center">Stocks</th>
                 <th colSpan={2} className="p-2 text-center">2 Weeks</th>

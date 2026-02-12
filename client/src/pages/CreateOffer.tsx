@@ -48,6 +48,8 @@ const CreateOffer = () => {
               <p className="text-sm text-gray-500 mt-1">
                 Add offer details and assign it to a division
               </p>
+              <div className="text-base font-medium text-blue-700 mt-1">Step 1</div>
+             
             </div>
 
         

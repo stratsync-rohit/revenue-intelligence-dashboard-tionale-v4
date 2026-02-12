@@ -375,11 +375,16 @@ const DivisionPage = () => {
     );
   };
 
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-6">
       <h1 className="text-2xl font-semibold">
         Offer Generation – Grocery
       </h1>
+      {/* Show Step 1 only for division/2 */}
+      
+        <div className="text-lg font-medium text-blue-700 mb-2">Step 2</div>
+      
 
       {/* FILTER BAR */}
       <div className="bg-white p-4 rounded-xl shadow flex flex-wrap items-end gap-6 z-[100] relative">
@@ -443,7 +448,7 @@ const DivisionPage = () => {
         <table className="min-w-full text-sm border-collapse">
           <thead className="sticky top-0 z-20">
             <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-              <th colSpan={14} className="p-2 text-center">NCUs listing</th>
+              <th colSpan={13} className="p-2 text-center">NCUs listing</th>
               <th className="p-2 text-center">Offer Price</th>
               <th colSpan={2} className="p-2 text-center">Stocks</th>
               <th colSpan={2} className="p-2 text-center">2 Weeks</th>
@@ -459,13 +464,13 @@ const DivisionPage = () => {
                 "Sub Brand",
                 "Description",
                 "Brand Classification",
-                "Remarks",
+                // "Remarks",
                 "Pack Size",
                 "MIN (USD)",
                 "FLOOR (USD)",
                 "LSP",
                 "LSP DATE",
-                "PSO_FOR_CUSTOMER",
+                "PSO FOR CUSTOMER",
                 "Offer Price",
                 "OFFER QTY CLEAN",
                 "OFFER QTY PROCESSED",
@@ -503,7 +508,7 @@ const DivisionPage = () => {
                 <td className="px-6 py-3 border">{item.subBrand}</td>
                 <td className="px-6 py-3 border">{item.description}</td>
                 <td className="px-6 py-3 border">{item.brandClassification || "N/A"}</td>
-                <td className="px-6 py-3 border">{item.remarks}</td>
+                  {/* <td className="px-6 py-3 border">{item.remarks}</td> */}
                 <td className="px-6 py-3 border">{item.packSize}</td>
                 <td className="px-6 py-3 border">{item.minUsd}</td>
                 <td className="px-6 py-3 border">{item.floorUsd}</td>
