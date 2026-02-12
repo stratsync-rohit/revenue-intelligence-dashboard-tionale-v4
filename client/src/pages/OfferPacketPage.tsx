@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import CancelPopup from "../components/common/CancelPopup";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const OfferPacketPage = () => {
@@ -17,7 +18,15 @@ const OfferPacketPage = () => {
     return null;
   }
 
-  const initialRows = tableData
+  type Row = {
+    id: string;
+    sku: string;
+    units: number;
+    price: number;
+    eta: string;
+  };
+
+  const initialRows: Row[] = tableData
     .filter((i: any) => selectedItems.includes(i.id))
     .map((item: any) => ({
       id: item.id,
@@ -27,16 +36,17 @@ const OfferPacketPage = () => {
       eta: item.etax || "N/A",
     }));
 
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState<Row[]>(initialRows);
   const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
 
   const handleChange = (
     id: string,
     field: "units" | "price",
     value: string
   ) => {
-    setRows((prev) =>
-      prev.map((row) =>
+    setRows((prev: Row[]) =>
+      prev.map((row: Row) =>
         row.id === id ? { ...row, [field]: Number(value) } : row
       )
     );
@@ -47,15 +57,43 @@ const OfferPacketPage = () => {
   };
 
   const handleDelete = (idx: number) => {
-    setRows((prev) => prev.filter((_, i) => i !== idx));
+    setRows((prev: Row[]) => prev.filter((_: Row, i: number) => i !== idx));
     if (editIdx === idx) setEditIdx(null);
   };
 
-  return (
-    <div className="min-h-screen bg-slate-100 flex justify-center py-10 px-4">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-slate-200">
+  
+  const handleSaveDraft = () => {
+    const draft = {
+      rows,
+      divisionName,
+      divisionId,
+      selectedItems,
+      tableData,
+      ts: Date.now(),
+    };
+    localStorage.setItem("offerPacketDraft", JSON.stringify(draft));
+    setShowCancelPopup(false);
+    navigate(-1);
+  };
 
-        {/* Header */}
+  // Cancel draft (remove from localStorage)
+  const handleCancelDraft = () => {
+    localStorage.removeItem("offerPacketDraft");
+    setShowCancelPopup(false);
+    navigate(-1);
+  };
+
+  // Just close popup
+  const handleClosePopup = () => {
+    setShowCancelPopup(false);
+  };
+
+  return (
+    <>
+      <div className="min-h-screen bg-slate-100 flex justify-center py-10 px-4">
+        <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-slate-200">
+
+    
         <div className="px-8 py-6 border-b">
           <h1 className="text-2xl font-semibold text-slate-800">
             Offer Packet
@@ -65,7 +103,7 @@ const OfferPacketPage = () => {
           </p>
         </div>
 
-        {/* Table */}
+        
         <div className="px-8 py-6 overflow-x-auto">
           <table className="w-full border border-slate-200 rounded-xl overflow-hidden">
             <thead className="bg-slate-50 text-slate-600 text-sm">
@@ -78,7 +116,7 @@ const OfferPacketPage = () => {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {rows.map((row, idx) => (
+              {rows.map((row: Row, idx: number) => (
                 <tr
                   key={row.id}
                   className={`border-t ${
@@ -147,10 +185,10 @@ const OfferPacketPage = () => {
           </table>
         </div>
 
-        {/* Footer Actions */}
+        
         <div className="px-8 py-5 border-t bg-slate-50 flex justify-between items-center">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => setShowCancelPopup(true)}
             className="text-slate-600 hover:text-slate-800 text-sm font-medium"
           >
             Cancel
@@ -172,6 +210,13 @@ const OfferPacketPage = () => {
         </div>
       </div>
     </div>
+    <CancelPopup
+      open={showCancelPopup}
+      onClose={handleClosePopup}
+      onCancelDraft={handleCancelDraft}
+      onSaveDraft={handleSaveDraft}
+    />
+    </>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Select from "react-select";
 
 /* ================= TYPES ================= */
@@ -11,7 +10,6 @@ type DivisionItem = {
   sku: string;
   brand: string;
   subBrand: string;
-  shippingTimeline: string;
   details: string;
   ncuStocks: number;
   ncuCows: number;
@@ -36,217 +34,188 @@ const divisionData: DivisionItem[] = [
     sku: "SKU-ZHD3L8",
     brand: "GUCCI",
     subBrand: "Gucci Bloom",
-    shippingTimeline: "Next 7 Days",
     details: "Sophisticated woody composition",
     ncuStocks: 879,
     ncuCows: 902,
-    eta: "25/02/2026"
+    eta: "18/01/2026" // Next 7 Days
   },
   {
     id: "605839",
     sku: "SKU-CJ2W6N",
     brand: "GUCCI",
     subBrand: "Gucci Guilty",
-    shippingTimeline: "Next 30 Days",
     details: "Subtle spicy blend",
     ncuStocks: 505,
     ncuCows: 0,
-    eta: null
+    eta: "20/01/2026" // Next 7 Days
   },
   {
     id: "353324",
     sku: "SKU-MOYY15",
     brand: "BURBERRY",
     subBrand: "Burberry Brit",
-    shippingTimeline: "Next 7 Days",
     details: "Subtle aquatic composition",
     ncuStocks: 367,
     ncuCows: 1061,
-    eta: "02/04/2026"
-  },
-  {
-    id: "794186",
-    sku: "SKU-70MULF",
-    brand: "BURBERRY",
-    subBrand: "Burberry Touch",
-    shippingTimeline: "Next 30 Days",
-    details: "Vibrant aquatic blend inspired by premium quality",
-    ncuStocks: 483,
-    ncuCows: 0,
-    eta: null
+    eta: "05/02/2026" // Next 30 Days
   },
   {
     id: "313794",
     sku: "SKU-HCBC30",
     brand: "CHANNEL",
     subBrand: "Chanel No. 5",
-    shippingTimeline: "Next 7 Days",
     details: "Vibrant citrus blend limited edition",
     ncuStocks: 493,
     ncuCows: 2359,
-    eta: "21/02/2026"
-  },
-  {
-    id: "669042",
-    sku: "SKU-MEYAYG",
-    brand: "CHANNEL",
-    subBrand: "Chanel Coco",
-    shippingTimeline: "Next 30 Days",
-    details: "Vibrant floral essence premium quality",
-    ncuStocks: 170,
-    ncuCows: 905,
-    eta: "12/02/2026"
+    eta: "10/02/2026" // Next 30 Days
   },
   {
     id: "245263",
     sku: "SKU-RVH4R5",
     brand: "HUGO BOSS",
     subBrand: "Boss Bottled",
-    shippingTimeline: "Next 7 Days",
     details: "Elegant oriental fragrance long-lasting",
     ncuStocks: 84,
     ncuCows: 129,
-    eta: "14/03/2026"
+    eta: "28/02/2026" // Next 60 Days
   },
-  {
-    id: "796435",
-    sku: "SKU-QZBHNI",
-    brand: "HUGO BOSS",
-    subBrand: "Boss The Scent",
-    shippingTimeline: "Next 30 Days",
-    details: "Elegant spicy composition premium quality",
-    ncuStocks: 952,
-    ncuCows: 667,
-    eta: "24/02/2026"
-  },
-  {
-    id: "227600",
-    sku: "SKU-IJWD4G",
-    brand: "GUCCI",
-    subBrand: "Gucci Bloom",
-    shippingTimeline: "Next 30 Days",
-    details: "Luxurious aquatic composition long-lasting",
-    ncuStocks: 280,
-    ncuCows: 0,
-    eta: null
-  },
-  {
-    id: "638252",
-    sku: "SKU-49BA7O",
-    brand: "HUGO BOSS",
-    subBrand: "Boss Bottled",
-    shippingTimeline: "Next 7 Days",
-    details: "Bold spicy fragrance limited edition",
-    ncuStocks: 551,
-    ncuCows: 1061,
-    eta: "03/04/2026"
-  }
+
+  { id: "782341", sku: "SKU-PLX9T2", brand: "DIOR", subBrand: "Sauvage", details: "Fresh aromatic masculine fragrance", ncuStocks: 720, ncuCows: 1450, eta: "16/01/2026" }, // 7 Days
+  { id: "918274", sku: "SKU-QWE8K1", brand: "YVES SAINT LAURENT", subBrand: "Y Eau de Parfum", details: "Intense woody fougere fragrance", ncuStocks: 640, ncuCows: 890, eta: null },
+  { id: "462918", sku: "SKU-XMZ3P9", brand: "ARMANI", subBrand: "Acqua di Gio", details: "Fresh marine citrus scent", ncuStocks: 520, ncuCows: 1320, eta: "02/02/2026" }, // 30 Days
+  { id: "574839", sku: "SKU-LKJ7N4", brand: "PRADA", subBrand: "Luna Rossa", details: "Clean and energetic fragrance", ncuStocks: 310, ncuCows: 450, eta: "25/02/2026" }, // 60 Days
+  { id: "689120", sku: "SKU-TYU6V8", brand: "VERSACE", subBrand: "Eros", details: "Sweet vanilla mint fragrance", ncuStocks: 415, ncuCows: 980, eta: "22/01/2026" }, // 7 Days
+  { id: "834729", sku: "SKU-UIO4M6", brand: "TOM FORD", subBrand: "Black Orchid", details: "Rich dark floral fragrance", ncuStocks: 290, ncuCows: 610, eta: "12/02/2026" }, // 30 Days
+  { id: "219384", sku: "SKU-ASD2F7", brand: "CALVIN KLEIN", subBrand: "CK One", details: "Light fresh unisex fragrance", ncuStocks: 860, ncuCows: 1200, eta: null },
+  { id: "748291", sku: "SKU-ZXC8V1", brand: "DOLCE & GABBANA", subBrand: "Light Blue", details: "Crisp fruity summer scent", ncuStocks: 430, ncuCows: 760, eta: "18/02/2026" }, // 60 Days
+  { id: "563920", sku: "SKU-HJK3L2", brand: "MONT BLANC", subBrand: "Legend", details: "Woody aromatic masculine scent", ncuStocks: 375, ncuCows: 540, eta: "19/01/2026" }, // 7 Days
+  { id: "192837", sku: "SKU-ERT9P4", brand: "BVLGARI", subBrand: "Man in Black", details: "Spicy oriental bold fragrance", ncuStocks: 260, ncuCows: 410, eta: "05/03/2026" }, // 60 Days
+  { id: "847362", sku: "SKU-YUI7K5", brand: "LANCOME", subBrand: "La Vie Est Belle", details: "Sweet floral gourmand fragrance", ncuStocks: 540, ncuCows: 890, eta: "03/02/2026" }, // 30 Days
+  { id: "384756", sku: "SKU-GHF6D3", brand: "PACO RABANNE", subBrand: "1 Million", details: "Warm spicy leather fragrance", ncuStocks: 610, ncuCows: 1020, eta: null },
+  { id: "657483", sku: "SKU-BNM5Q2", brand: "ISSEY MIYAKE", subBrand: "L'Eau d'Issey", details: "Fresh aquatic floral scent", ncuStocks: 295, ncuCows: 470, eta: "01/03/2026" }, // 60 Days
+  { id: "918203", sku: "SKU-WER4T8", brand: "CAROLINA HERRERA", subBrand: "Good Girl", details: "Sweet warm sensual fragrance", ncuStocks: 480, ncuCows: 810, eta: "21/01/2026" }, // 7 Days
+  { id: "274839", sku: "SKU-MNB1X9", brand: "JEAN PAUL GAULTIER", subBrand: "Le Male", details: "Minty vanilla masculine scent", ncuStocks: 350, ncuCows: 620, eta: "15/02/2026" }, // 30 Days
+  { id: "556712", sku: "SKU-POI8L0", brand: "MAISON MARGIELA", subBrand: "Replica Jazz Club", details: "Warm rum tobacco fragrance", ncuStocks: 210, ncuCows: 330, eta: null }
 ];
 
 
+const getTimelineFromEta = (eta: string | null) => {
+  if (!eta) return null;
 
+  const today = new Date();
+  const [day, month, year] = eta.split("/").map(Number);
+  const etaDate = new Date(year, month - 1, day);
+
+  const diffDays = Math.ceil(
+    (etaDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  if (diffDays <= 7) return "Next 7 Days";
+  if (diffDays <= 30) return "Next 30 Days";
+  if (diffDays <= 60) return "Next 60 Days";
+
+  return "Beyond 60 Days";
+};
+
+/* ================= COMPONENT ================= */
 const DivisionPage = () => {
   const { divisionId } = useParams();
   const navigate = useNavigate();
 
-
-  const [sourceData, setSourceData] = useState<DivisionItem[]>(divisionData);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
-
   const [cowOnly, setCowOnly] = useState(true);
   const [etaFilter, setEtaFilter] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
 
-  const [selectedCustomer, setSelectedCustomer] = useState<OptionType | null>(null);
   const [selectedShipping, setSelectedShipping] = useState<OptionType[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
   const [selectedSubBrands, setSelectedSubBrands] = useState<OptionType[]>([]);
-
-  const customers: OptionType[] = [
-    { value: "1", label: "Customer A" },
-    { value: "2", label: "Customer B" },
-    { value: "3", label: "Customer C" }
+  const [selectedCustomers, setSelectedCustomers] = useState<OptionType[]>([]);
+  // Dummy customer options
+  const customerOptions: OptionType[] = [
+    { value: "customer1", label: "Customer 1" },
+    { value: "customer2", label: "Customer 2" },
+    { value: "customer3", label: "Customer 3" },
+    { value: "customer4", label: "Customer 4" },
   ];
 
+  /* ================= OPTIONS ================= */
   const shippingOptions: OptionType[] = [
     { value: "Next 7 Days", label: "Next 7 Days" },
-    { value: "Next 30 Days", label: "Next 30 Days" }
+    { value: "Next 30 Days", label: "Next 30 Days" },
+    { value: "Next 60 Days", label: "Next 60 Days" }
   ];
 
-  const brandOptions: OptionType[] = useMemo(() => {
-    return [...new Set(sourceData.map(d => d.brand))].map(b => ({
-      value: b,
-      label: b
-    }));
-  }, [sourceData]);
+  const brandOptions: OptionType[] = useMemo(
+    () =>
+      [...new Set(divisionData.map(d => d.brand))].map(b => ({
+        value: b,
+        label: b
+      })),
+    []
+  );
 
   const subBrandOptions: OptionType[] = useMemo(() => {
-    if (selectedBrands.length === 0) return [];
+    if (!selectedBrands.length) return [];
     const brands = selectedBrands.map(b => b.value);
 
     return [...new Set(
-      sourceData
+      divisionData
         .filter(d => brands.includes(d.brand))
         .map(d => d.subBrand)
     )].map(sb => ({ value: sb, label: sb }));
-  }, [selectedBrands, sourceData]);
+  }, [selectedBrands]);
 
+  /* ================= FILTER LOGIC ================= */
   const tableData = useMemo(() => {
-    return sourceData.filter(item => {
-   
+    return divisionData.filter(item => {
+      const timeline = getTimelineFromEta(item.eta);
+
       if (cowOnly && item.ncuCows === 0) return false;
 
- 
-      if (etaFilter !== "All" && item.shippingTimeline !== etaFilter) {
-        return false;
-      }
+      if (etaFilter !== "All" && timeline !== etaFilter) return false;
 
-  
       if (
         selectedShipping.length &&
-        !selectedShipping.some(s => s.value === item.shippingTimeline)
-      ) {
+        !selectedShipping.some(s => s.value === timeline)
+      )
         return false;
-      }
 
       if (
         selectedBrands.length &&
         !selectedBrands.some(b => b.value === item.brand)
-      ) {
+      )
         return false;
-      }
 
-      // SubBrand
       if (
         selectedSubBrands.length &&
         !selectedSubBrands.some(sb => sb.value === item.subBrand)
-      ) {
+      )
         return false;
-      }
 
+      // Customer filter logic placeholder (no customer in item)
+      // If you want to filter by customer, add customer property to DivisionItem and update here
       return true;
     });
   }, [
-    sourceData,
     cowOnly,
     etaFilter,
     selectedShipping,
     selectedBrands,
-    selectedSubBrands
+    selectedSubBrands,
+    selectedCustomers
   ]);
 
   /* ================= UI ================= */
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-6">
-
       {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold">Offer generation</h1>
         <p className="text-sm text-gray-500">Division: Grocery</p>
       </div>
 
-      {/* TOP FILTER BAR */}
+      {/* TOP BAR */}
       <div className="bg-white p-4 rounded-lg shadow flex items-center gap-6">
         <label className="flex items-center gap-2 font-semibold">
           <input
@@ -268,6 +237,7 @@ const DivisionPage = () => {
             <option value="All">All</option>
             <option value="Next 7 Days">Next 7 Days</option>
             <option value="Next 30 Days">Next 30 Days</option>
+            <option value="Next 60 Days">Next 60 Days</option>
           </select>
         </div>
 
@@ -283,19 +253,20 @@ const DivisionPage = () => {
       {showFilters && (
         <div className="bg-white p-4 rounded-lg shadow grid grid-cols-1 md:grid-cols-4 gap-4">
           <Select
-            value={selectedCustomer}
-            onChange={v => setSelectedCustomer(v as OptionType)}
-            options={customers}
-            isClearable
-            placeholder="Select Customer"
+          
+            value={selectedCustomers}
+            onChange={v => setSelectedCustomers(v as OptionType[])}
+            options={customerOptions}
+            placeholder="Search Customer"
+            isSearchable={true}
           />
 
           <Select
-            isMulti
+            
             value={selectedShipping}
             onChange={v => setSelectedShipping(v as OptionType[])}
             options={shippingOptions}
-            placeholder="Select Timelines"
+            placeholder="Shipping Timeline"
           />
 
           <Select
@@ -306,7 +277,8 @@ const DivisionPage = () => {
               setSelectedSubBrands([]);
             }}
             options={brandOptions}
-            placeholder="Select Brands"
+            placeholder="Search Brand"
+            isSearchable={true}
           />
 
           <Select
@@ -314,8 +286,9 @@ const DivisionPage = () => {
             value={selectedSubBrands}
             onChange={v => setSelectedSubBrands(v as OptionType[])}
             options={subBrandOptions}
-            isDisabled={selectedBrands.length === 0}
-            placeholder="Select Sub-Brands"
+            isDisabled={!selectedBrands.length}
+            placeholder="Search Sub-Brand"
+            isSearchable={true}
           />
         </div>
       )}
