@@ -84,27 +84,19 @@ const OfferPacketPage = () => {
           <table className="w-full text-sm border-collapse">
             <thead className="sticky top-0 z-20">
               <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-                <th colSpan={14} className="p-2 text-center">Item Details</th>
+                <th colSpan={1} className="p-2 text-center">Item Details</th>
                 <th className="p-2 text-center">Offer Price</th>
-                <th colSpan={2} className="p-2 text-center">Stocks</th>
+                <th colSpan={3} className="p-2 text-center">Stocks</th>
                 <th colSpan={2} className="p-2 text-center">2 Weeks</th>
                 <th colSpan={2} className="p-2 text-center">4 Weeks</th>
               </tr>
               <tr className="bg-gray-100 text-left sticky top-[32px]">
                 {[
-                  "Item Ref",
+                 
                   "UPC",
-                  "Brand",
-                  "Sub Brand",
-                  "Description",
-                  "Brand Classification",
-                  "Remarks",
-                  "Pack Size",
-                  "MIN (USD)",
-                  "FLOOR (USD)",
-                  "LSP",
-                  "LSP DATE",
-                  "PSO_FOR_CUSTOMER",
+                 
+                  
+                  
                   "Offer Price",
                   "OFFER QTY CLEAN",
                   "OFFER QTY PROCESSED",
@@ -122,19 +114,9 @@ const OfferPacketPage = () => {
             <tbody>
               {rows.map(item => (
                 <tr key={item.id} className="hover:bg-indigo-50">
-                  <td className="px-6 py-3 border">{item.itemRef}</td>
+                  {/* <td className="px-6 py-3 border">{item.itemRef}</td> */}
                   <td className="px-6 py-3 border">{item.upc}</td>
-                  <td className="px-6 py-3 border">{item.brand}</td>
-                  <td className="px-6 py-3 border">{item.subBrand}</td>
-                  <td className="px-6 py-3 border">{item.description}</td>
-                  <td className="px-6 py-3 border">{item.brandClassification || "N/A"}</td>
-                  <td className="px-6 py-3 border">{item.remarks}</td>
-                  <td className="px-6 py-3 border">{item.packSize}</td>
-                  <td className="px-6 py-3 border">{item.minUsd}</td>
-                  <td className="px-6 py-3 border">{item.floorUsd}</td>
-                  <td className="px-6 py-3 border">{item.lsp}</td>
-                  <td className="px-6 py-3 border">{item.lspDate}</td>
-                  <td className="px-6 py-3 border">{item.psoForCustomer}</td>
+           
                   <td className="px-12 py-3 border text-base">
                     {editId === item.id ? (
                       <input

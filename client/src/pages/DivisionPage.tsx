@@ -443,7 +443,7 @@ const DivisionPage = () => {
         <table className="min-w-full text-sm border-collapse">
           <thead className="sticky top-0 z-20">
             <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-              <th colSpan={14} className="p-2 text-center">Item Details</th>
+              <th colSpan={14} className="p-2 text-center">NCUs listing</th>
               <th className="p-2 text-center">Offer Price</th>
               <th colSpan={2} className="p-2 text-center">Stocks</th>
               <th colSpan={2} className="p-2 text-center">2 Weeks</th>
@@ -536,7 +536,7 @@ const DivisionPage = () => {
           }
           className={`px-6 py-2 rounded-lg text-white ${
             selectedItems.length
-              ? "bg-indigo-600 hover:bg-indigo-700"
+              ? "bg-green-600 hover:bg-green-700"
               : "bg-gray-300"
           }`}
         >
