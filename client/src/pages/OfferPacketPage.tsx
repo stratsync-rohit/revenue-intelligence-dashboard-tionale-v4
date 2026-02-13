@@ -35,7 +35,7 @@ const OfferPacketPage = () => {
     );
   };
 
-  // ...existing code...
+
 
   
   const handleSaveDraft = () => {
@@ -119,7 +119,6 @@ const OfferPacketPage = () => {
                 <tr key={item.id} className="hover:bg-indigo-50">
                   {/* <td className="px-6 py-3 border">{item.itemRef}</td> */}
                   <td className="px-6 py-3 border">{item.upc}</td>
-           
                   <td className="px-12 py-3 border text-base">
                     {editId === item.id ? (
                       <input
@@ -143,20 +142,22 @@ const OfferPacketPage = () => {
                   <td className="px-6 py-3 border">{item.week4Process}</td>
                   <td className="px-12 py-3 border text-base">{item.offerQtyProcessed4W}</td>
                   <td className="px-6 py-3 border text-center">
-                    <button
-                      className="text-gray-600 hover:text-indigo-600 p-2"
-                      onClick={() => setEditId(item.id)}
-                      title="Edit Price"
-                    >
-                      <FaPencilAlt />
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-800 p-2"
-                      onClick={() => setRows(rows.filter(r => r.id !== item.id))}
-                      title="Delete Row"
-                    >
-                      <FaTrash />
-                    </button>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <button
+                        className="text-gray-600 hover:text-indigo-600 p-2"
+                        onClick={() => setEditId(item.id)}
+                        title="Edit Price"
+                      >
+                        <FaPencilAlt />
+                      </button>
+                      <button
+                        className="text-red-600 hover:text-red-800 p-2"
+                        onClick={() => setRows(rows.filter(r => r.id !== item.id))}
+                        title="Delete Row"
+                      >
+                        <FaTrash />
+                      </button>
+                    </span>
                   </td>
                 </tr>
               ))}
