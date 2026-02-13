@@ -8,6 +8,7 @@ import SupplierHeader from "../components/header/SupplierHeader";
 import CustomerHeader from "../components/header/CustomerHeader";
 import InventoryHeader from "../components/header/InventoryHeader";
 import CategoryHeader from "../components/header/CategoryHeader";
+import { SelectedDivisionProvider } from "../context/SelectedDivisionContext";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -24,10 +25,8 @@ const AppLayout = () => {
   };
 
   return (
-    <>
+    <SelectedDivisionProvider>
       {renderHeader()}
-
-     
       <AnimatePresence mode="wait">
         <motion.main
           key={location.pathname}
@@ -40,9 +39,8 @@ const AppLayout = () => {
           <Outlet />
         </motion.main>
       </AnimatePresence>
-
       <Footer />
-    </>
+    </SelectedDivisionProvider>
   );
 };
 

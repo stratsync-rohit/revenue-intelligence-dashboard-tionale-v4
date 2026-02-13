@@ -1,6 +1,8 @@
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
+import { useSelectedDivision } from "../context/SelectedDivisionContext";
+import { sampleDivisions } from "../data/divisions";
 import Select from "react-select";
 
 /* ================= TYPES ================= */
@@ -277,11 +279,18 @@ const getTimelineFromEta = (eta: string | null) => {
 };
 
 /* ================= COMPONENT ================= */
+
+
+const divisionIdToName: Record<string, string> = Object.fromEntries(
+  sampleDivisions.map(d => [String(d.id), d.name])
+);
+
 const DivisionPage = () => {
   const { divisionId } = useParams();
   const navigate = useNavigate();
+  const { selectedDivision, setSelectedDivision } = useSelectedDivision();
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]); // Default unchecked
   const [cowOnly, setCowOnly] = useState(true);
   const [items, setItems] = useState<DivisionItem[]>(divisionData);
 
@@ -379,12 +388,13 @@ const DivisionPage = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-6">
       <h1 className="text-2xl font-semibold">
-        Offer Generation – Grocery
+        Offer Generation 
       </h1>
+      <div className="text-lg font-medium text-black">
+        Division: <span className="text-blue-700 font-bold">{selectedDivision || divisionIdToName[divisionId || ""] || "-"}</span>
+      </div>
       {/* Show Step 1 only for division/2 */}
-      
-        <div className="text-lg font-medium text-blue-700 mb-2">Step 2</div>
-      
+      <div className="text-lg font-medium text-blue-700 mb-2">Step 2</div>
 
       {/* FILTER BAR */}
       <div className="bg-white p-4 rounded-xl shadow flex flex-wrap items-end gap-6 z-[100] relative">
@@ -534,11 +544,14 @@ const DivisionPage = () => {
       <div className="flex justify-end">
         <button
           disabled={!selectedItems.length}
-          onClick={() =>
+          onClick={() => {
+            // Set selected division in context
+            const divisionName = divisionIdToName[divisionId || ""] || "-";
+            setSelectedDivision(divisionName);
             navigate(`/division/${divisionId}/offer`, {
-              state: { selectedItems, tableData }
-            })
-          }
+              state: { selectedItems, tableData, divisionName, divisionId }
+            });
+          }}
           className={`px-6 py-2 rounded-lg text-white ${
             selectedItems.length
               ? "bg-green-600 hover:bg-green-700"

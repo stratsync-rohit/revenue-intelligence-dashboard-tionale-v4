@@ -1,34 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sampleDivisions } from "../data/divisions";
 
 const CreateOffer = () => {
   const [description, setDescription] = useState("");
   const [divisions, setDivisions] = useState([]);
   const [selectedDivision, setSelectedDivision] = useState("");
-  // Loading state (optional)
+  
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-  
-    const sampleDivisions = [
-      { id: 1, name: "Electronics" },
-      { id: 2, name: "Fashion" },
-      { id: 3, name: "Grocery" },
-      { id: 4, name: "Home & Living" },
-      { id: 5, name: "Automotive" },
-      { id: 6, name: "Sports & Fitness" },
-      { id: 7, name: "Books" },
-      { id: 8, name: "Health & Beauty" },
-      { id: 9, name: "Toys & Games" },
-      { id: 10, name: "Stationery" },
-    ];
     const sampleDescription = "This is a sample offer  fetched from backend.";
     setTimeout(() => {
       setDivisions(sampleDivisions);
       setDescription(sampleDescription);
       setLoading(false);
-    }, 700); 
+    }, 700);
   }, []);
 
   return (

@@ -1,6 +1,7 @@
 
 import AppRouter from "./router/Router";
 import React, { useEffect } from "react";
+import { SelectedDivisionProvider } from "./context/SelectedDivisionContext";
 
 
 declare global {
@@ -29,7 +30,11 @@ const App: React.FC = () => {
       });
   }, []);
 
-  return <AppRouter />;
+  return (
+    <SelectedDivisionProvider>
+      <AppRouter />
+    </SelectedDivisionProvider>
+  );
 };
 
 export default App;
