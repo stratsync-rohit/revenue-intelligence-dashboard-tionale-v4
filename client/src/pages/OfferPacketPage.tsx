@@ -84,14 +84,14 @@ const OfferPacketPage = () => {
 
         
         <div className="px-2 sm:px-4 md:px-8 py-6 overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
+          <table className="w-full text-sm border-collapse whitespace-nowrap">
             <thead className="sticky top-0 z-20">
               <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-                <th colSpan={1} className="p-2 text-center">NCUs listing</th>
-                <th className="p-2 text-center">Offer Price</th>
-                <th colSpan={3} className="p-2 text-center">Stocks</th>
-                <th colSpan={2} className="p-2 text-center">2 Weeks</th>
-                <th colSpan={2} className="p-2 text-center">4 Weeks</th>
+                <th colSpan={1} className="p-2 text-center whitespace-nowrap">NCUs listing</th>
+                <th className="p-2 text-center whitespace-nowrap">Offer Price</th>
+                <th colSpan={3} className="p-2 text-center whitespace-nowrap">Stocks</th>
+                <th colSpan={2} className="p-2 text-center whitespace-nowrap">2 Weeks</th>
+                <th colSpan={2} className="p-2 text-center whitespace-nowrap">4 Weeks</th>
               </tr>
               <tr className="bg-gray-100 text-left sticky top-[32px]">
                 {[
@@ -110,7 +110,7 @@ const OfferPacketPage = () => {
                   "4W OFFER QTY PROCESSED",
                   "Actions"
                 ].map(h => (
-                  <th key={h} className={h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base"}>{h}</th>
+                  <th key={h} className={(h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base") + " whitespace-nowrap"}>{h}</th>
                 ))}
               </tr>
             </thead>

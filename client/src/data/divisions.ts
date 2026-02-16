@@ -1,5 +1,5 @@
 export const sampleDivisions = [
-  {id: 1, name: "Fragnace"},
+  {id: 1, name: "Fragrance"},
   { id: 2, name: "Electronics" },
   { id: 3, name: "Fashion" },
   { id: 4, name: "Grocery" },
