@@ -1,18 +1,27 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelectedDivision } from "../context/SelectedDivisionContext";
 import CancelPopup from "../components/common/CancelPopup";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const OfferPacketPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const {
     selectedItems = [],
     tableData = [],
-    divisionName = "-",
-    divisionId = "",
+    divisionName: stateDivisionName = "-",
+    divisionId: stateDivisionId = "",
   } = location.state || {};
+
+  // Get selected division from context
+  const { selectedDivision } = useSelectedDivision();
+
+  // Use context division if available, else fallback to state
+  const divisionName = selectedDivision || stateDivisionName;
+  const divisionId = stateDivisionId;
 
   if (!selectedItems.length || !tableData.length) {
     navigate(`/division/${divisionId}`);
@@ -97,9 +106,6 @@ const OfferPacketPage = () => {
                 {[
                  
                   "UPC",
-                 
-                  
-                  
                   "Offer Price",
                   "OFFER QTY CLEAN",
                   "OFFER QTY PROCESSED",
@@ -107,7 +113,7 @@ const OfferPacketPage = () => {
                   "OFFER QTY PROCESSED",
                   "OFFER QTY CLEAN",
                   "OFFER QTY PROCESSED",
-                  "4W OFFER QTY PROCESSED",
+                  "OFFER QTY PROCESSED",
                   "Actions"
                 ].map(h => (
                   <th key={h} className={(h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base") + " whitespace-nowrap"}>{h}</th>
@@ -134,13 +140,104 @@ const OfferPacketPage = () => {
                       <span>{item.offerPrice}</span>
                     )}
                   </td>
-                  <td className="px-6 py-3 border">{item.stockClean}</td>
-                  <td className="px-6 py-3 border">{item.stockProcess}</td>
-                  <td className="px-6 py-3 border">{item.week2Clean}</td>
-                  <td className="px-6 py-3 border">{item.week2Process}</td>
-                  <td className="px-6 py-3 border">{item.week4Clean}</td>
-                  <td className="px-6 py-3 border">{item.week4Process}</td>
-                  <td className="px-12 py-3 border text-base">{item.offerQtyProcessed4W}</td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.stockClean}
+                        value={item.stockClean}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockClean: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.stockClean}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.stockProcess}
+                        value={item.stockProcess}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockProcess: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.stockProcess}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.week2Clean}
+                        value={item.week2Clean}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Clean: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.week2Clean}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.week2Process}
+                        value={item.week2Process}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Process: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.week2Process}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.week4Clean}
+                        value={item.week4Clean}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Clean: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.week4Clean}</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 border">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.week4Process}
+                        value={item.week4Process}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Process: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.week4Process}</span>
+                    )}
+                  </td>
+                  <td className="px-12 py-3 border text-base">
+                    {editId === item.id ? (
+                      <input
+                        type="number"
+                        min={0}
+                        max={item.offerQtyProcessed4W}
+                        value={item.offerQtyProcessed4W}
+                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, offerQtyProcessed4W: Number(e.target.value) } : row))}
+                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ) : (
+                      <span>{item.offerQtyProcessed4W}</span>
+                    )}
+                  </td>
                   <td className="px-6 py-3 border text-center">
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                       <button
@@ -200,4 +297,4 @@ const OfferPacketPage = () => {
   );
 };
 
-export default OfferPacketPage;
+export default OfferPacketPage; 
