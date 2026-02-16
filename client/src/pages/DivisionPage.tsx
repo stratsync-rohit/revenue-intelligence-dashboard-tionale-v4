@@ -528,21 +528,21 @@ const DivisionPage = () => {
                 <td className="px-6 py-3 border">{item.brand}</td>
                 <td className="px-6 py-3 border">{item.subBrand}</td>
                 <td className="px-6 py-3 border">{item.description}</td>
-                <td className="px-6 py-3 border">{item.brandClassification || "N/A"}</td>
+                <td className="px-6 py-3 border text-center">{item.brandClassification || "N/A"}</td>
                   {/* <td className="px-6 py-3 border">{item.remarks}</td> */}
                 <td className="px-6 py-3 border">{item.packSize}</td>
-                <td className="px-6 py-3 border">{item.minUsd}</td>
-                <td className="px-6 py-3 border">{item.floorUsd}</td>
-                <td className="px-6 py-3 border">{item.lsp}</td>
-                <td className="px-6 py-3 border">{item.lspDate}</td>
-                <td className="px-6 py-3 border">{item.psoForCustomer}</td>
-                <td className="px-6 py-3 border">{item.stockClean}</td>
-                <td className="px-6 py-3 border">{item.stockProcess}</td>
-                <td className="px-6 py-3 border">{item.week2Clean}</td>
-                <td className="px-6 py-3 border">{item.week2Process}</td>
-                <td className="px-6 py-3 border">{item.week4Clean}</td>
-                <td className="px-6 py-3 border">{item.week4Process}</td>
-                <td className="px-12 py-3 border text-base">
+                <td className="px-6 py-3 border text-center">{item.minUsd}</td>
+                <td className="px-6 py-3 border text-center">{item.floorUsd}</td>
+                <td className="px-6 py-3 border text-center">{item.lsp}</td>
+                <td className="px-6 py-3 border text-center">{item.lspDate}</td>
+                <td className="px-6 py-3 border text-center">{item.psoForCustomer}</td>
+                <td className="px-6 py-3 border text-center">{item.stockClean}</td>
+                <td className="px-6 py-3 border text-center">{item.stockProcess}</td>
+                <td className="px-6 py-3 border text-center">{item.week2Clean}</td>
+                <td className="px-6 py-3 border text-center">{item.week2Process}</td>
+                <td className="px-6 py-3 border text-center">{item.week4Clean}</td>
+                <td className="px-6 py-3 border text-center">{item.week4Process}</td>
+                <td className="px-12 py-3 border text-base text-center">
                   <span>{item.offerPrice}</span>
                 </td>
               </tr>
