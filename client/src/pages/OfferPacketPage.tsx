@@ -30,6 +30,7 @@ const OfferPacketPage = () => {
 
 
   // Table state for editing offer price
+  // Table state for editing offer price
   const [editId, setEditId] = useState<string | null>(null);
   const [rows, setRows] = useState<any[]>(
     tableData.filter((i: any) => selectedItems.includes(i.id))
@@ -97,13 +98,13 @@ const OfferPacketPage = () => {
             <thead className="sticky top-0 z-20">
               <tr className="bg-gray-200 text-xs uppercase text-gray-600">
                 <th colSpan={1} className="p-2 text-center whitespace-nowrap border border-gray-300">NCUs listing</th>
-                <th className="p-2 text-center whitespace-nowrap border border-gray-300">Offer Price</th>
+                <th className="p-2 text-center whitespace-nowrap border border-gray-300">Price</th>
                 <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">Stocks</th>
                 <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">2 Weeks</th>
                 <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">4 Weeks</th>
                  <th
     rowSpan={2}
-    className="p-2 text-center border border-gray-300"
+    className="p-2 px-4 text-center border border-gray-300"
   >
     Actions
   </th>
@@ -139,7 +140,6 @@ const OfferPacketPage = () => {
                         value={item.offerPrice}
                         onChange={e => handlePriceChange(item.id, e.target.value)}
                         className="w-32  rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        onBlur={() => setEditId(null)}
                         autoFocus
                       />
                     ) : (
@@ -151,7 +151,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.stockClean}
+                        max={999999}
                         value={item.stockClean}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockClean: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -165,7 +165,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.stockProcess}
+                        max={999999}
                         value={item.stockProcess}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockProcess: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -179,7 +179,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.week2Clean}
+                        max={999999}
                         value={item.week2Clean}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Clean: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -193,7 +193,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.week2Process}
+                        max={999999}
                         value={item.week2Process}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Process: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -207,7 +207,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.week4Clean}
+                        max={999999}
                         value={item.week4Clean}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Clean: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -221,7 +221,7 @@ const OfferPacketPage = () => {
                       <input
                         type="number"
                         min={0}
-                        max={item.week4Process}
+                        max={999999}
                         value={item.week4Process}
                         onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Process: Number(e.target.value) } : row))}
                         className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -230,13 +230,12 @@ const OfferPacketPage = () => {
                       <span>{item.week4Process}</span>
                     )}
                   </td>
-                 
                   <td className="px-6 py-3 border text-center">
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                       <button
                         className="text-gray-600 hover:text-indigo-600 p-2"
                         onClick={() => setEditId(item.id)}
-                        title="Edit Price"
+                        title="Edit"
                       >
                         <FaPencilAlt />
                       </button>

@@ -294,10 +294,14 @@ const DivisionPage = () => {
   const [cowOnly, setCowOnly] = useState(true);
   const [items, setItems] = useState<DivisionItem[]>(divisionData);
 
+
   const [selectedCustomers, setSelectedCustomers] = useState<OptionType[]>([]);
   const [selectedShipping, setSelectedShipping] = useState<OptionType[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
   const [selectedSubBrands, setSelectedSubBrands] = useState<OptionType[]>([]);
+
+  // Search bar state
+  const [searchText, setSearchText] = useState("");
 
   const shippingOptions: OptionType[] = [
     { value: "Next 7 Days", label: "Next 7 Days" },
@@ -361,6 +365,20 @@ const DivisionPage = () => {
       )
         return false;
 
+      // Search filter for Brand, Sub Brand, Description, Brand Classification
+      if (searchText.trim()) {
+        const search = searchText.trim().toLowerCase();
+        const fields = [
+          item.brand,
+          item.subBrand,
+          item.description,
+          item.brandClassification || ""
+        ];
+        if (!fields.some(f => f && f.toLowerCase().includes(search))) {
+          return false;
+        }
+      }
+
       return true;
     });
   }, [
@@ -369,7 +387,8 @@ const DivisionPage = () => {
     selectedCustomers,
     selectedShipping,
     selectedBrands,
-    selectedSubBrands
+    selectedSubBrands,
+    searchText
   ]);
 
   const [editId, setEditId] = useState<string | null>(null);
@@ -397,6 +416,7 @@ const DivisionPage = () => {
 
       {/* FILTER BAR */}
       <div className="bg-white p-4 rounded-xl shadow flex flex-wrap items-end gap-6 z-[100] relative">
+
         <div className="min-w-[200px] relative z-[110]">
           <Select
             isMulti
@@ -449,8 +469,6 @@ const DivisionPage = () => {
             onChange={() => setCowOnly(!cowOnly)}
             className="w-5 h-5"
           />
-      
-         
         </div>
       </div>
 
@@ -460,7 +478,7 @@ const DivisionPage = () => {
           <thead className="sticky top-0 z-20 ">
             <tr className="bg-gray-200 text-xs uppercase text-gray-600">
               <th colSpan={13} className="p-2 text-center whitespace-nowrap border border-gray-300">NCUs listing</th>
-              <th className="p-2 text-center border border-gray-300">Offer Price</th>
+              <th className="p-2 text-center border border-gray-300"> Price</th>
               <th colSpan={2} className="p-2 text-center border border-gray-300">Stocks</th>
               <th colSpan={2} className="p-2 text-center border border-gray-300">2 Weeks</th>
               <th colSpan={2} className="p-2 text-center border border-gray-300">4 Weeks</th>
