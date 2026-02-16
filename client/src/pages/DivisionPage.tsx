@@ -457,13 +457,13 @@ const DivisionPage = () => {
       {/* TABLE */}
       <div className="bg-white rounded-xl shadow overflow-x-auto max-h-[600px]">
         <table className="min-w-full text-sm border-collapse">
-          <thead className="sticky top-0 z-20">
+          <thead className="sticky top-0 z-20 ">
             <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-              <th colSpan={13} className="p-2 text-center whitespace-nowrap">NCUs listing</th>
-              <th className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">Offer Price</th>
-              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">Stocks</th>
-              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">2 Weeks</th>
-              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">4 Weeks</th>
+              <th colSpan={13} className="p-2 text-center whitespace-nowrap border border-gray-300">NCUs listing</th>
+              <th className="p-2 text-center border border-gray-300">Offer Price</th>
+              <th colSpan={2} className="p-2 text-center border border-gray-300">Stocks</th>
+              <th colSpan={2} className="p-2 text-center border border-gray-300">2 Weeks</th>
+              <th colSpan={2} className="p-2 text-center border border-gray-300">4 Weeks</th>
             </tr>
 
             <tr className="bg-gray-100 text-left sticky top-[32px]">

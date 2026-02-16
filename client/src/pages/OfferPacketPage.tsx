@@ -96,25 +96,31 @@ const OfferPacketPage = () => {
           <table className="w-full text-sm border-collapse whitespace-nowrap">
             <thead className="sticky top-0 z-20">
               <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-                <th colSpan={1} className="p-2 text-center whitespace-nowrap">NCUs listing</th>
-                <th className="p-2 text-center whitespace-nowrap">Offer Price</th>
-                <th colSpan={3} className="p-2 text-center whitespace-nowrap">Stocks</th>
-                <th colSpan={2} className="p-2 text-center whitespace-nowrap">2 Weeks</th>
-                <th colSpan={2} className="p-2 text-center whitespace-nowrap">4 Weeks</th>
+                <th colSpan={1} className="p-2 text-center whitespace-nowrap border border-gray-300">NCUs listing</th>
+                <th className="p-2 text-center whitespace-nowrap border border-gray-300">Offer Price</th>
+                <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">Stocks</th>
+                <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">2 Weeks</th>
+                <th colSpan={2} className="p-2 text-center whitespace-nowrap border border-gray-300">4 Weeks</th>
+                 <th
+    rowSpan={2}
+    className="p-2 text-center border border-gray-300"
+  >
+    Actions
+  </th>
               </tr>
               <tr className="bg-gray-100 text-left sticky top-[32px]">
                 {[
                  
                   "UPC",
                   "Offer Price",
+                  "OFFER QTY CLEAN", // stock 
+                  "OFFER QTY PROCESSED", //stock
                   "OFFER QTY CLEAN",
                   "OFFER QTY PROCESSED",
                   "OFFER QTY CLEAN",
                   "OFFER QTY PROCESSED",
-                  "OFFER QTY CLEAN",
-                  "OFFER QTY PROCESSED",
-                  "OFFER QTY PROCESSED",
-                  "Actions"
+                
+                  
                 ].map(h => (
                   <th key={h} className={(h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base") + " whitespace-nowrap"}>{h}</th>
                 ))}
@@ -132,7 +138,7 @@ const OfferPacketPage = () => {
                         min={0}
                         value={item.offerPrice}
                         onChange={e => handlePriceChange(item.id, e.target.value)}
-                        className="w-32 rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-32  rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         onBlur={() => setEditId(null)}
                         autoFocus
                       />
@@ -224,20 +230,7 @@ const OfferPacketPage = () => {
                       <span>{item.week4Process}</span>
                     )}
                   </td>
-                  <td className="px-12 py-3 border text-base">
-                    {editId === item.id ? (
-                      <input
-                        type="number"
-                        min={0}
-                        max={item.offerQtyProcessed4W}
-                        value={item.offerQtyProcessed4W}
-                        onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, offerQtyProcessed4W: Number(e.target.value) } : row))}
-                        className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      />
-                    ) : (
-                      <span>{item.offerQtyProcessed4W}</span>
-                    )}
-                  </td>
+                 
                   <td className="px-6 py-3 border text-center">
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                       <button
