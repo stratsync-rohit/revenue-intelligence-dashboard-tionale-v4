@@ -299,7 +299,6 @@ const DivisionPage = () => {
   const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
   const [selectedSubBrands, setSelectedSubBrands] = useState<OptionType[]>([]);
 
-  /* ================= FILTER OPTIONS ================= */
   const shippingOptions: OptionType[] = [
     { value: "Next 7 Days", label: "Next 7 Days" },
     { value: "Next 30 Days", label: "Next 30 Days" },
@@ -443,26 +442,28 @@ const DivisionPage = () => {
         </div>
 
         <div className="flex items-center gap-2 ml-auto relative z-[110]">
+           <span className="font-medium">Include COW</span>
           <input
             type="checkbox"
             checked={cowOnly}
             onChange={() => setCowOnly(!cowOnly)}
             className="w-5 h-5"
           />
-          <span className="font-medium">COW Only</span>
+      
+         
         </div>
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-xl shadow overflow-auto max-h-[600px]">
+      <div className="bg-white rounded-xl shadow overflow-x-auto max-h-[600px]">
         <table className="min-w-full text-sm border-collapse">
           <thead className="sticky top-0 z-20">
             <tr className="bg-gray-200 text-xs uppercase text-gray-600">
-              <th colSpan={13} className="p-2 text-center">NCUs listing</th>
-              <th className="p-2 text-center">Offer Price</th>
-              <th colSpan={2} className="p-2 text-center">Stocks</th>
-              <th colSpan={2} className="p-2 text-center">2 Weeks</th>
-              <th colSpan={2} className="p-2 text-center">4 Weeks</th>
+              <th colSpan={13} className="p-2 text-center whitespace-nowrap">NCUs listing</th>
+              <th className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">Offer Price</th>
+              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">Stocks</th>
+              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">2 Weeks</th>
+              <th colSpan={2} className="p-2 text-center border-l-2 border-gray-400 whitespace-nowrap">4 Weeks</th>
             </tr>
 
             <tr className="bg-gray-100 text-left sticky top-[32px]">
@@ -489,7 +490,17 @@ const DivisionPage = () => {
                 "OFFER QTY CLEAN",
                 "OFFER QTY PROCESSED"
               ].map(h => (
-                <th key={h} className={h === "Offer Price" ? "px-12 py-3 border text-base" : "px-6 py-3 border text-base"}>
+                <th
+                  key={h}
+                  className={
+                    (h === "Offer Price"
+                      ? "px-12 "
+                      : h === "LSP DATE"
+                        ? "px-14 "
+                        : "px-6 ") +
+                    "py-3 border text-base whitespace-nowrap"
+                  }
+                >
                   {h}
                 </th>
               ))}
