@@ -1,6 +1,11 @@
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { LuArrowUpDown } from "react-icons/lu";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedItems } from "../store/divisionSlice";
+// Pagination constants
+const ITEMS_PER_PAGE = 10;
 import { useSelectedDivision } from "../context/SelectedDivisionContext";
 import { sampleDivisions } from "../data/divisions";
 import Select from "react-select";
@@ -41,7 +46,7 @@ type DivisionItem = {
 
   week4Clean: number;
   week4Process: number;
-};
+  };
 
 /* ================= SAMPLE DATA (14 ITEMS) ================= */
 
@@ -494,12 +499,15 @@ const divisionIdToName: Record<string, string> = Object.fromEntries(
 );
 
 const DivisionPage = () => {
+  // Generic sorting state
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
   const { divisionId } = useParams();
   const navigate = useNavigate();
   const { selectedDivision, setSelectedDivision } = useSelectedDivision();
 
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]); // Default unchecked
+  const dispatch = useDispatch();
+  const selectedItems = useSelector((state: any) => state.division.selectedItems);
   const [cowOnly, setCowOnly] = useState(true);
   const [items, setItems] = useState<DivisionItem[]>(divisionData);
   const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
@@ -528,43 +536,61 @@ const DivisionPage = () => {
     [items]
   );
 
-  /* ================= FILTER LOGIC ================= */
-  const tableData = useMemo(() => {
-    return items.filter(item => {
+  // Filtered and sorted data (all rows)
+  const filteredData = useMemo(() => {
+    let filtered = items.filter(item => {
       const timeline = getTimelineFromEta(item.eta);
-
       if (cowOnly && !item.cow) return false;
-
-      // Customer filter logic placeholder (no customer in item)
-      // If you want to filter by customer, add customer property to DivisionItem and update here
-
       if (
         selectedBrands.length &&
         !selectedBrands.some(b => b.value === item.brand)
       )
         return false;
-
       if (
         selectedCustomers.length &&
         !selectedCustomers.some(c => c.value === (item.customer || ""))
       )
         return false;
-
       if (
         selectedShipping.length &&
         !selectedShipping.some(s => s.value === timeline)
       )
         return false;
-
       return true;
     });
+    if (sortConfig) {
+      filtered = [...filtered].sort((a, b) => {
+        const aVal = (a as any)[sortConfig.key];
+        const bVal = (b as any)[sortConfig.key];
+        if (aVal == null && bVal == null) return 0;
+        if (aVal == null) return 1;
+        if (bVal == null) return -1;
+        if (typeof aVal === 'number' && typeof bVal === 'number') {
+          return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
+        }
+        return sortConfig.direction === 'asc'
+          ? String(aVal).localeCompare(String(bVal))
+          : String(bVal).localeCompare(String(aVal));
+      });
+    }
+    return filtered;
   }, [
     items,
     cowOnly,
     selectedBrands,
     selectedCustomers,
-    selectedShipping
+    selectedShipping,
+    sortConfig
   ]);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / ITEMS_PER_PAGE));
+  // Paginated data for current page
+  const tableData = useMemo(() => {
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredData.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  }, [filteredData, currentPage]);
 
   const [editId, setEditId] = useState<string | null>(null);
   const handlePriceChange = (id: string, value: string) => {
@@ -594,18 +620,18 @@ const DivisionPage = () => {
 <div className="bg-white p-4 rounded-xl shadow flex items-start gap-6 flex-nowrap z-[100] relative">
 
   {/* Cow Filter */}
-  <div className="flex mt-2 items-center gap-2 shrink-0 relative z-[110]">
+  <div className=" flex mt-2 items-center gap-2 shrink-0 relative z-[110]">
     <span className="font-medium">Include COW</span>
     <input
       type="checkbox"
       checked={cowOnly}
       onChange={() => setCowOnly(!cowOnly)}
-      className="w-5 h-5"
+      className="w-5 h-5 cursor-pointer"
     />
   </div>
 
   {/* Brand Filter */}
-<div className="min-w-[200px] max-w-[450px] w-auto relative z-[110]">
+<div className="min-w-[200px] max-w-[450px] w-auto relative z-[110] cursor-pointer">
     <Select
       isMulti
       value={selectedBrands}
@@ -653,50 +679,238 @@ const DivisionPage = () => {
             </tr>
 
             <tr className="bg-gray-100 text-left sticky top-[32px]">
-              {[
-                "Select",
-                "Item Ref",
-                "UPC",
-                "Brand",
-                "Sub Brand",
-                "Description",
-                "Brand Classification",
-                // "Remarks",
-                "Pack Size",
-                "MIN (USD)",
-                "FLOOR (USD)",
-                "LSP",
-                "LSP DATE",
-                "PSO FOR CUSTOMER",
-                "OFFER PRICE",
-                "OFFER QTY CLEAN",
-                "OFFER QTY PROCESSED",
-                "OFFER QTY CLEAN",
-                "OFFER QTY PROCESSED",
-                "OFFER QTY CLEAN",
-                "OFFER QTY PROCESSED"
-              ].map(h => (
-                <th
-                  key={h}
-                  className={
-                    (["MIN (USD)", "FLOOR (USD)", "LSP", "LSP DATE"].includes(h)
-                      ? "bg-yellow-100 "
-                      : "") +
-                    (h === "OFFER PRICE"
-                      ? "px-12 "
-                      : h === "LSP DATE"
-                        ? "px-14 "
-                        : h === "Description"
-                          ? "px-6 min-w-[260px] "
-                          : h === "Sub Brand"
-                            ? "px-6 min-w-[240px] "
-                            : "px-6 ") +
-                    "py-3 border text-base whitespace-nowrap"
-                  }
-                >
-                  {h}
-                </th>
-              ))}
+              {/* Table headers with generic sorting */}
+              <th className="px-6 py-3 border text-base whitespace-nowrap">Select</th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none w-auto"
+                onClick={() => setSortConfig(prev => prev?.key === 'itemRef' ? { key: 'itemRef', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'itemRef', direction: 'asc' })}
+                title="Sort by Item Ref"
+              >
+                <div className="flex items-center justify-end w-full">
+                  <span className="mr-2">Item Ref</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'itemRef' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'upc' ? { key: 'upc', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'upc', direction: 'asc' })}
+                title="Sort by UPC"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">UPC</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'upc' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'brand' ? { key: 'brand', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'brand', direction: 'asc' })}
+                title="Sort by Brand"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">Brand</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'brand' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 min-w-[240px] py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'subBrand' ? { key: 'subBrand', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'subBrand', direction: 'asc' })}
+                title="Sort by Sub Brand"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">Sub Brand</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'subBrand' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 min-w-[260px] py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'description' ? { key: 'description', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'description', direction: 'asc' })}
+                title="Sort by Description"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">Description</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'description' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'brandClassification' ? { key: 'brandClassification', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'brandClassification', direction: 'asc' })}
+                title="Sort by Brand Classification"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">Brand Classification</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'brandClassification' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              {/* <th className="px-6 py-3 border text-base whitespace-nowrap">Remarks</th> */}
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'packSize' ? { key: 'packSize', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'packSize', direction: 'asc' })}
+                title="Sort by Pack Size"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">Pack Size</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'packSize' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap bg-yellow-100 cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'minUsd' ? { key: 'minUsd', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'minUsd', direction: 'asc' })}
+                title="Sort by MIN (USD)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">MIN (USD)</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'minUsd' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap bg-yellow-100 cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'floorUsd' ? { key: 'floorUsd', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'floorUsd', direction: 'asc' })}
+                title="Sort by FLOOR (USD)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">FLOOR (USD)</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'floorUsd' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap bg-yellow-100 cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'lsp' ? { key: 'lsp', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'lsp', direction: 'asc' })}
+                title="Sort by LSP"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">LSP</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'lsp' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-14 py-3 border text-base whitespace-nowrap bg-yellow-100 cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'lspDate' ? { key: 'lspDate', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'lspDate', direction: 'asc' })}
+                title="Sort by LSP DATE"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">LSP DATE</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'lspDate' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'psoForCustomer' ? { key: 'psoForCustomer', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'psoForCustomer', direction: 'asc' })}
+                title="Sort by PSO FOR CUSTOMER"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">PSO FOR CUSTOMER</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'psoForCustomer' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'offerPrice' ? { key: 'offerPrice', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'offerPrice', direction: 'asc' })}
+                title="Sort by OFFER PRICE"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER PRICE</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'offerPrice' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              {/* The following columns are repeated for weeks/stock, so use the same pattern if needed */}
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'stockClean' ? { key: 'stockClean', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'stockClean', direction: 'asc' })}
+                title="Sort by OFFER QTY CLEAN"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY CLEAN</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'stockClean' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'stockProcess' ? { key: 'stockProcess', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'stockProcess', direction: 'asc' })}
+                title="Sort by OFFER QTY PROCESSED"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY PROCESSED</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'stockProcess' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'week2Clean' ? { key: 'week2Clean', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'week2Clean', direction: 'asc' })}
+                title="Sort by OFFER QTY CLEAN (2 Weeks)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY CLEAN</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'week2Clean' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'week2Process' ? { key: 'week2Process', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'week2Process', direction: 'asc' })}
+                title="Sort by OFFER QTY PROCESSED (2 Weeks)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY PROCESSED</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'week2Process' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'week4Clean' ? { key: 'week4Clean', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'week4Clean', direction: 'asc' })}
+                title="Sort by OFFER QTY CLEAN (4 Weeks)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY CLEAN</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'week4Clean' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 border text-base whitespace-nowrap cursor-pointer select-none"
+                onClick={() => setSortConfig(prev => prev?.key === 'week4Process' ? { key: 'week4Process', direction: prev.direction === 'asc' ? 'desc' : 'asc' } : { key: 'week4Process', direction: 'asc' })}
+                title="Sort by OFFER QTY PROCESSED (4 Weeks)"
+              >
+                <div className="flex items-center justify-center w-full">
+                  <span className="mr-2">OFFER QTY PROCESSED</span>
+                  <span className="align-middle inline-block">
+                    <LuArrowUpDown className={sortConfig?.key === 'week4Process' ? 'inline text-blue-500' : 'inline text-gray-400'} />
+                  </span>
+                </div>
+              </th>
             </tr>
           </thead>
 
@@ -707,13 +921,15 @@ const DivisionPage = () => {
                   <input
                     type="checkbox"
                     checked={selectedItems.includes(item.id)}
-                    onChange={() =>
-                      setSelectedItems(prev =>
-                        prev.includes(item.id)
-                          ? prev.filter(i => i !== item.id)
-                          : [...prev, item.id]
-                      )
-                    }
+                    onChange={() => {
+                      let updated;
+                      if (selectedItems.includes(item.id)) {
+                        updated = selectedItems.filter((i: string) => i !== item.id);
+                      } else {
+                        updated = [...selectedItems, item.id];
+                      }
+                      dispatch(setSelectedItems(updated));
+                    }}
                   />
                 </td>
                 <td className="px-6 py-3 border">{item.itemRef}</td>
@@ -742,7 +958,28 @@ const DivisionPage = () => {
             ))}
           </tbody>
         </table>
+        {/* Pagination Controls */}
+        
       </div>
+      <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-3 py-1 rounded border bg-gray-100 disabled:opacity-50"
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="px-3 py-1 rounded border bg-gray-100 disabled:opacity-50"
+            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
 
       {/* ACTION */}
       <div className="flex justify-end">
@@ -752,8 +989,9 @@ const DivisionPage = () => {
             // Set selected division in context
             const divisionName = divisionIdToName[divisionId || ""] || "-";
             setSelectedDivision(divisionName);
+            // Always pass ALL selectedItems, not just current page
             navigate(`/division/${divisionId}/offer`, {
-              state: { selectedItems, tableData, divisionName, divisionId }
+              state: { selectedItems, tableData: items, divisionName, divisionId }
             });
           }}
           className={`px-6 py-2 rounded-lg text-white ${

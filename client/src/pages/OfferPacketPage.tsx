@@ -1,6 +1,7 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+// import { useSelector } from "react-redux";
 import { useSelectedDivision } from "../context/SelectedDivisionContext";
 import CancelPopup from "../components/common/CancelPopup";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
@@ -9,12 +10,10 @@ const OfferPacketPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {
-    selectedItems = [],
-    tableData = [],
-    divisionName: stateDivisionName = "-",
-    divisionId: stateDivisionId = "",
-  } = location.state || {};
+
+
+  // Always get selectedItems and tableData from location.state for navigation reliability
+  const { selectedItems = [], tableData = [], divisionName: stateDivisionName = "-", divisionId: stateDivisionId = "" } = location.state || {};
 
   // Get selected division from context
   const { selectedDivision } = useSelectedDivision();
@@ -22,6 +21,7 @@ const OfferPacketPage = () => {
   // Use context division if available, else fallback to state
   const divisionName = selectedDivision || stateDivisionName;
   const divisionId = stateDivisionId;
+
 
   if (!selectedItems.length || !tableData.length) {
     navigate(`/division/${divisionId}`);
@@ -158,7 +158,7 @@ const OfferPacketPage = () => {
                     <td className="px-6 py-3 border text-center bg-yellow-50">{item.floorUsd}</td>
                     <td className="px-6 py-3 border text-center bg-yellow-50">{item.lsp}</td>
                     <td className="px-6 py-3 border text-center bg-yellow-50">{item.lspDate}</td>
-                    <td className="px-6 py-3 border text-center">{item.pso5rCustomer}</td>
+                    <td className="px-6 py-3 border text-center">{item.psoForCustomer}</td>
                     <td className="px-12 py-3 border text-base text-center">
                       {editId === item.id ? (
                         <input
