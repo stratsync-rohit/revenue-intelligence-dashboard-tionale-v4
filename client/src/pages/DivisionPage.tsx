@@ -290,18 +290,13 @@ const DivisionPage = () => {
   const navigate = useNavigate();
   const { selectedDivision, setSelectedDivision } = useSelectedDivision();
 
+
   const [selectedItems, setSelectedItems] = useState<string[]>([]); // Default unchecked
   const [cowOnly, setCowOnly] = useState(true);
   const [items, setItems] = useState<DivisionItem[]>(divisionData);
-
-
+  const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
   const [selectedCustomers, setSelectedCustomers] = useState<OptionType[]>([]);
   const [selectedShipping, setSelectedShipping] = useState<OptionType[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<OptionType[]>([]);
-  const [selectedSubBrands, setSelectedSubBrands] = useState<OptionType[]>([]);
-
-  // Search bar state
-  const [searchText, setSearchText] = useState("");
 
   const shippingOptions: OptionType[] = [
     { value: "Next 7 Days", label: "Next 7 Days" },
@@ -325,18 +320,6 @@ const DivisionPage = () => {
     [items]
   );
 
-  const subBrandOptions = useMemo(() => {
-    if (!selectedBrands.length) return [];
-    const brands = selectedBrands.map(b => b.value);
-    return [
-      ...new Set(
-        items
-          .filter(d => brands.includes(d.brand))
-          .map(d => d.subBrand)
-      )
-    ].map(sb => ({ value: sb, label: sb }));
-  }, [selectedBrands, items]);
-
   /* ================= FILTER LOGIC ================= */
   const tableData = useMemo(() => {
     return items.filter(item => {
@@ -348,47 +331,31 @@ const DivisionPage = () => {
       // If you want to filter by customer, add customer property to DivisionItem and update here
 
       if (
-        selectedShipping.length &&
-        !selectedShipping.some(s => s.value === timeline)
-      )
-        return false;
-
-      if (
         selectedBrands.length &&
         !selectedBrands.some(b => b.value === item.brand)
       )
         return false;
 
       if (
-        selectedSubBrands.length &&
-        !selectedSubBrands.some(sb => sb.value === item.subBrand)
+        selectedCustomers.length &&
+        !selectedCustomers.some(c => c.value === (item.customer || ""))
       )
         return false;
 
-      // Search filter for Brand, Sub Brand, Description, Brand Classification
-      if (searchText.trim()) {
-        const search = searchText.trim().toLowerCase();
-        const fields = [
-          item.brand,
-          item.subBrand,
-          item.description,
-          item.brandClassification || ""
-        ];
-        if (!fields.some(f => f && f.toLowerCase().includes(search))) {
-          return false;
-        }
-      }
+      if (
+        selectedShipping.length &&
+        !selectedShipping.some(s => s.value === timeline)
+      )
+        return false;
 
       return true;
     });
   }, [
     items,
     cowOnly,
-    selectedCustomers,
-    selectedShipping,
     selectedBrands,
-    selectedSubBrands,
-    searchText
+    selectedCustomers,
+    selectedShipping
   ]);
 
   const [editId, setEditId] = useState<string | null>(null);
@@ -414,63 +381,56 @@ const DivisionPage = () => {
       {/* Show Step 1 only for division/2 */}
       <div className="text-lg font-medium text-blue-700 mb-2">Step 2</div>
 
+
       {/* FILTER BAR */}
-      <div className="bg-white p-4 rounded-xl shadow flex flex-wrap items-end gap-6 z-[100] relative">
+<div className="bg-white p-4 rounded-xl shadow flex items-start gap-6 flex-nowrap z-[100] relative">
 
-        <div className="min-w-[200px] relative z-[110]">
-          <Select
-            isMulti
-            value={selectedCustomers}
-            onChange={v => setSelectedCustomers(v as OptionType[])}
-            options={customerOptions}
-            placeholder="Customer"
-          />
-        </div>
+  {/* Cow Filter */}
+  <div className="flex mt-2 items-center gap-2 shrink-0 relative z-[110]">
+    <span className="font-medium">Include COW</span>
+    <input
+      type="checkbox"
+      checked={cowOnly}
+      onChange={() => setCowOnly(!cowOnly)}
+      className="w-5 h-5"
+    />
+  </div>
 
-        <div className="min-w-[200px] relative z-[110]">
-          <Select
-            isMulti
-            value={selectedShipping}
-            onChange={v => setSelectedShipping(v as OptionType[])}
-            options={shippingOptions}
-            placeholder="Shipping Timeline"
-          />
-        </div>
+  {/* Brand Filter */}
+<div className="min-w-[200px] max-w-[450px] w-auto relative z-[110]">
+    <Select
+      isMulti
+      value={selectedBrands}
+      onChange={v => setSelectedBrands(v as OptionType[])}
+      options={brandOptions}
+      placeholder="Brand"
+    />
+  </div>
 
-        <div className="min-w-[200px] relative z-[110]">
-          <Select
-            isMulti
-            value={selectedBrands}
-            onChange={v => {
-              setSelectedBrands(v as OptionType[]);
-              setSelectedSubBrands([]);
-            }}
-            options={brandOptions}
-            placeholder="Brand"
-          />
-        </div>
+  {/* Customer Filter */}
+  <div className="w-[220px] shrink-0 relative z-[110]">
+    <Select
+      isMulti
+      value={selectedCustomers}
+      onChange={v => setSelectedCustomers(v as OptionType[])}
+      options={customerOptions}
+      placeholder="Customer"
+    />
+  </div>
 
-        <div className="min-w-[200px]">
-          <Select
-            isMulti
-            value={selectedSubBrands}
-            onChange={v => setSelectedSubBrands(v as OptionType[])}
-            options={subBrandOptions}
-            isDisabled={!selectedBrands.length}
-            placeholder="Sub Brand"
-          />
-        </div>
+  {/* Shipping Timeline Filter */}
+  <div className="w-[220px] shrink-0 relative z-[110]">
+    <Select
+      isMulti
+      value={selectedShipping}
+      onChange={v => setSelectedShipping(v as OptionType[])}
+      options={shippingOptions}
+      placeholder="Shipping Timeline"
+    />
+  </div>
 
-        <div className="flex items-center gap-2 ml-auto relative z-[110]">
-           <span className="font-medium">Include COW</span>
-          <input
-            type="checkbox"
-            checked={cowOnly}
-            onChange={() => setCowOnly(!cowOnly)}
-            className="w-5 h-5"
-          />
-        </div>
-      </div>
+</div>
+
 
       {/* TABLE */}
       <div className="bg-white rounded-xl shadow overflow-x-auto max-h-[600px]">
@@ -500,7 +460,7 @@ const DivisionPage = () => {
                 "LSP",
                 "LSP DATE",
                 "PSO FOR CUSTOMER",
-                "Offer Price",
+                "OFFER PRICE",
                 "OFFER QTY CLEAN",
                 "OFFER QTY PROCESSED",
                 "OFFER QTY CLEAN",
@@ -511,11 +471,18 @@ const DivisionPage = () => {
                 <th
                   key={h}
                   className={
-                    (h === "Offer Price"
+                    (["MIN (USD)", "FLOOR (USD)", "LSP", "LSP DATE"].includes(h)
+                      ? "bg-yellow-100 "
+                      : "") +
+                    (h === "OFFER PRICE"
                       ? "px-12 "
                       : h === "LSP DATE"
                         ? "px-14 "
-                        : "px-6 ") +
+                        : h === "Description"
+                          ? "px-6 min-w-[260px] "
+                          : h === "Sub Brand"
+                            ? "px-6 min-w-[240px] "
+                            : "px-6 ") +
                     "py-3 border text-base whitespace-nowrap"
                   }
                 >
@@ -544,15 +511,15 @@ const DivisionPage = () => {
                 <td className="px-6 py-3 border">{item.itemRef}</td>
                 <td className="px-6 py-3 border">{item.upc}</td>
                 <td className="px-6 py-3 border">{item.brand}</td>
-                <td className="px-6 py-3 border">{item.subBrand}</td>
-                <td className="px-6 py-3 border">{item.description}</td>
+                <td className="px-6 min-w-[240px] py-3 border">{item.subBrand}</td>
+                <td className="px-6 min-w-[260px] py-3 border">{item.description}</td>
                 <td className="px-6 py-3 border text-center">{item.brandClassification || "N/A"}</td>
-                  {/* <td className="px-6 py-3 border">{item.remarks}</td> */}
+                {/* <td className="px-6 py-3 border">{item.remarks}</td> */}
                 <td className="px-6 py-3 border">{item.packSize}</td>
-                <td className="px-6 py-3 border text-center">{item.minUsd}</td>
-                <td className="px-6 py-3 border text-center">{item.floorUsd}</td>
-                <td className="px-6 py-3 border text-center">{item.lsp}</td>
-                <td className="px-6 py-3 border text-center">{item.lspDate}</td>
+                <td className="px-6 py-3 border text-center bg-yellow-50">{item.minUsd}</td>
+                <td className="px-6 py-3 border text-center bg-yellow-50">{item.floorUsd}</td>
+                <td className="px-6 py-3 border text-center bg-yellow-50">{item.lsp}</td>
+                <td className="px-6 py-3 border text-center bg-yellow-50">{item.lspDate}</td>
                 <td className="px-6 py-3 border text-center">{item.psoForCustomer}</td>
                 <td className="px-6 py-3 border text-center">{item.stockClean}</td>
                 <td className="px-6 py-3 border text-center">{item.stockProcess}</td>
