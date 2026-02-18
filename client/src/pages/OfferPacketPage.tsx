@@ -4,6 +4,7 @@ import { useState } from "react";
 // import { useSelector } from "react-redux";
 import { useSelectedDivision } from "../context/SelectedDivisionContext";
 import CancelPopup from "../components/common/CancelPopup";
+import OfferPacketSavePopup from "../components/common/OfferPacketSavePopup";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const OfferPacketPage = () => {
@@ -36,6 +37,23 @@ const OfferPacketPage = () => {
     tableData.filter((i: any) => selectedItems.includes(i.id))
   );
   const [showCancelPopup, setShowCancelPopup] = useState(false);
+  const [showSavePopup, setShowSavePopup] = useState(false);
+  // Save Offer Packet popup logic
+  const handleOpenSavePopup = () => setShowSavePopup(true);
+  const handleCloseSavePopup = () => setShowSavePopup(false);
+  const handleSavePacket = (packetName: string) => {
+    // Save logic here (can be extended)
+    const saveData = {
+      packetName,
+      date: new Date().toISOString(),
+      selectedList: rows,
+      divisionName,
+      divisionId,
+    };
+    localStorage.setItem("offerPacketSaved", JSON.stringify(saveData));
+    setShowSavePopup(false);
+    // Optionally show success or navigate
+  };
 
   const handlePriceChange = (id: string, value: string) => {
     setRows(prev =>
@@ -294,7 +312,10 @@ const OfferPacketPage = () => {
               <button className="px-5 py-2 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition">
                 Send Email
               </button>
-              <button className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition shadow">
+              <button
+                className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition shadow"
+                onClick={handleOpenSavePopup}
+              >
                 Save Offer
               </button>
             </div>
@@ -306,6 +327,12 @@ const OfferPacketPage = () => {
         onClose={handleClosePopup}
         onCancelDraft={handleCancelDraft}
         onSaveDraft={handleSaveDraft}
+      />
+      <OfferPacketSavePopup
+        open={showSavePopup}
+        onClose={handleCloseSavePopup}
+        onSave={handleSavePacket}
+        selectedList={rows}
       />
     </>
   );
