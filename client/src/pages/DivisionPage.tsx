@@ -1295,10 +1295,10 @@ const DivisionPage = () => {
 
 
 
-      <div className="flex items-center gap-2 mt-4 w-full">
-        <div className="flex-1 flex justify-end pr-96">
+      <div className="flex flex-col md:flex-row items-center gap-6 md:gap-14 mt-4 w-full">
+        <div className=" flex-1  flex justify-center ml-96 ">
           {/* Pagination Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-1 w-full mr-24 md:mr-16 lg:mr-32">
             <button
               className="disabled:opacity-50"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -1306,7 +1306,7 @@ const DivisionPage = () => {
             >
               <ChevronLeft className="cursor-pointer" />
             </button>
-            <span>
+            <span className="mx-1">
               Page {currentPage} of {totalPages}
             </span>
             <button
@@ -1319,28 +1319,30 @@ const DivisionPage = () => {
           </div>
         </div>
         {/* Generate Offer Button */}
-        <button
-          disabled={!selectedItems.length}
-          onClick={() => {
-            const divisionName = divisionIdToName[divisionId || ""] || "-";
-            setSelectedDivision(divisionName);
-            navigate(`/division/${divisionId}/offer`, {
-              state: {
-                selectedItems,
-                tableData: items,
-                divisionName,
-                divisionId,
-              },
-            });
-          }}
-          className={`px-6 py-2 rounded-lg text-white ${
-            selectedItems.length
-              ? "bg-green-600 hover:bg-green-700"
-              : "bg-gray-300"
-          }`}
-        >
-          Generate Offer
-        </button>
+        <div className="flex-1 flex justify-end w-full mt-4 md:mt-0">
+          <button
+            disabled={!selectedItems.length}
+            onClick={() => {
+              const divisionName = divisionIdToName[divisionId || ""] || "-";
+              setSelectedDivision(divisionName);
+              navigate(`/division/${divisionId}/offer`, {
+                state: {
+                  selectedItems,
+                  tableData: items,
+                  divisionName,
+                  divisionId,
+                },
+              });
+            }}
+            className={`px-6 py-2 rounded-lg text-white ${
+              selectedItems.length
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-gray-300"
+            }`}
+          >
+            Generate Offer
+          </button>
+        </div>
       </div>
 
       {/* ACTION */}

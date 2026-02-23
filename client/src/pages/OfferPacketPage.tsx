@@ -184,7 +184,7 @@ const OfferPacketPage = () => {
                           min={0}
                           value={item.offerPrice}
                           onChange={e => handlePriceChange(item.id, e.target.value)}
-                          className="w-32  rounded-lg border border-slate-300 px-3 py-1.5 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                           className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                           autoFocus
                         />
                       ) : (
@@ -199,7 +199,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.stockClean}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockClean: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.stockClean}</span>
@@ -213,7 +213,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.stockProcess}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, stockProcess: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.stockProcess}</span>
@@ -227,7 +227,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.week2Clean}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Clean: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.week2Clean}</span>
@@ -241,7 +241,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.week2Process}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week2Process: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.week2Process}</span>
@@ -255,7 +255,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.week4Clean}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Clean: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.week4Clean}</span>
@@ -269,7 +269,7 @@ const OfferPacketPage = () => {
                           max={999999}
                           value={item.week4Process}
                           onChange={e => setRows(prev => prev.map(row => row.id === item.id ? { ...row, week4Process: Number(e.target.value) } : row))}
-                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-24 rounded-lg border border-slate-300 px-2 py-1 text-center focus:outline-none "
                         />
                       ) : (
                         <span>{item.week4Process}</span>
@@ -278,7 +278,7 @@ const OfferPacketPage = () => {
                     <td className="px-6 py-3 border text-center">
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                         <button
-                          className="text-gray-600 hover:text-indigo-600 p-2"
+                          className="text-gray-600 hover:text-gray-800 p-2"
                           onClick={() => setEditId(item.id)}
                           title="Edit"
                         >
